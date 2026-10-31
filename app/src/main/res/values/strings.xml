@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel Center</string>
+    <string name="recents_service_label">Pixel Center — sterowanie telefonu</string>
+    <string name="recents_service_description">Pokazuje przycisk „Zamknij wszystkie aplikacje” na systemowym ekranie ostatnich aplikacji. Gdy użytkownik włączy sterowanie muzyką, usługa reaguje na długie naciśnięcia przycisków głośności wyłącznie przy wygaszonym ekranie. Nie zapisuje ani nie wysyła treści ekranu ani naciśnięć przycisków.</string>
+    <string name="unsupported_service_disabled">Usługa Pixel Center została wyłączona, ponieważ urządzenie nie jest obsługiwanym Google Pixelem.</string>
+    <string name="overlay_clear_all">Zamknij wszystkie aplikacje</string>
+    <string name="overlay_clearing">Zamykanie aplikacji…</string>
+    <string name="overlay_window_title">Pixel Center — Ostatnie aplikacje</string>
+    <string name="clear_success">Zamknięto ostatnie aplikacje</string>
+    <string name="clear_failure">Upłynął czas szukania systemowego przycisku. Możesz spróbować ponownie.</string>
+    <string name="clear_no_tasks">Nie znaleziono aplikacji do zamknięcia</string>
+</resources>
