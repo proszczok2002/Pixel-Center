@@ -11,9 +11,9 @@ android {
         minSdk = 28
         targetSdk = 37
         versionCode = providers.gradleProperty("pixelCenterVersionCode")
-            .orElse("28").get().toInt()
+            .orElse("29").get().toInt()
         versionName = providers.gradleProperty("pixelCenterVersionName")
-            .orElse("1.0").get()
+            .orElse("1.01").get()
         testInstrumentationRunner =
             "pl.proszczok.pixelspeecheq.ScreenOffGestureInstrumentation"
     }

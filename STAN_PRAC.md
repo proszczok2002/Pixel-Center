@@ -2,15 +2,17 @@
 
 ## Aktualny stan — migracja na GitHub, 2026-10-31
 
-- Przygotowano pierwsze stabilne wydanie GitHub: 1.0 (`versionCode=28`).
+- Publiczne repozytorium: `https://github.com/proszczok2002/Pixel-Center`.
+- Wydano pierwszą stabilną wersję GitHub 1.0 (`versionCode=28`) i przygotowano aktualizację kontrolną 1.01 (`versionCode=29`).
 - Updater odczytuje manifest z `raw.githubusercontent.com` i przyjmuje wyłącznie APK z wydań `proszczok2002/Pixel-Center`.
 - Zachowano sprawdzanie SHA-256, pakietu, kodu wersji i certyfikatu oraz instalację zatwierdzaną przez system Android.
 - Dodano w aplikacji dobrowolne wsparcie przez Revolut i PayPal.
-- Pełny build `clean testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug` zakończył się powodzeniem.
+- Pełny build `clean testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug` zakończył się powodzeniem osobno dla 1.0 i 1.01.
 - APK 1.0: 2 719 126 bajtów; SHA-256 `247D9D048364A52B9338AA027F30DA3F9BD4CDB2605B799686900426C21D47EE`.
+- APK 1.01: 2 719 130 bajtów; SHA-256 `022F4F99256169F992E20B91AF831B5BA951975941B8EB20B8B3047D8170CE1B`.
 - Pakiet: `pl.proszczok.pixelspeecheq`; podpis jest identyczny z 1.20: certyfikat SHA-256 `C033826456D8A38F662306C5D3253EF0A7B8B4D19582DD50408D0861CD4CC41E`.
 - Telefon nie był podłączony i zgodnie z decyzją użytkownika nie był potrzebny do tej migracji. Test urządzeniowy pozostaje zakresem wcześniejszych wydań.
-- Po publikacji 1.0 zostanie wydane 1.01 (`versionCode=29`) w celu praktycznego sprawdzenia ścieżki aktualizacji GitHub.
+- Wersja 1.01 służy do praktycznego sprawdzenia ścieżki aktualizacji 1.0 → 1.01 przez GitHub Releases.
 
 Poniżej zachowano historyczny dziennik poprzednich wydań.
 

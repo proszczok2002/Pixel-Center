@@ -1,9 +1,9 @@
 {
   "appId": "pl.proszczok.pixelspeecheq",
-  "versionCode": 28,
-  "versionName": "1.0",
-  "apkUrl": "https://github.com/proszczok2002/Pixel-Center/releases/download/v1.0/Pixel-Center-1.0-20261031.apk",
-  "changelog": "Pierwsze stabilne wydanie Pixel Center na GitHubie. Updater korzysta teraz z GitHub Releases. Dodano wsparcie projektu przez Revolut i PayPal.",
+  "versionCode": 29,
+  "versionName": "1.01",
+  "apkUrl": "https://github.com/proszczok2002/Pixel-Center/releases/download/v1.01/Pixel-Center-1.01-20261031.apk",
+  "changelog": "Wydanie kontrolne potwierdzaj\u0105ce przej\u015bcie updatera z poprzedniego serwera do GitHub Releases. Bez zmian w dzia\u0142aniu czterech g\u0142\u00f3wnych modu\u0142\u00f3w wzgl\u0119dem 1.0.",
   "publishedAt": "2026-10-31",
-  "sha256": "247D9D048364A52B9338AA027F30DA3F9BD4CDB2605B799686900426C21D47EE"
+  "sha256": "022F4F99256169F992E20B91AF831B5BA951975941B8EB20B8B3047D8170CE1B"
 }

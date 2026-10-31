@@ -1,5 +1,17 @@
 # Historia zmian / Changelog
 
+## 1.01 — 2026-10-31
+
+### Polski
+
+- Wydanie kontrolne potwierdzające działanie migracji updatera z poprzedniego serwera do GitHub Releases.
+- Bez zmian w działaniu czterech głównych modułów Pixel Center względem 1.0.
+
+### English
+
+- Verification release for the updater migration from the previous server to GitHub Releases.
+- No functional changes to Pixel Center's four main modules compared with 1.0.
+
 ## 1.0 — 2026-10-31
 
 ### Polski
