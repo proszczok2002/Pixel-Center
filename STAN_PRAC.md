@@ -7,12 +7,14 @@
 - Updater odczytuje manifest z `raw.githubusercontent.com` i przyjmuje wyłącznie APK z wydań `proszczok2002/Pixel-Center`.
 - Zachowano sprawdzanie SHA-256, pakietu, kodu wersji i certyfikatu oraz instalację zatwierdzaną przez system Android.
 - Dodano w aplikacji dobrowolne wsparcie przez Revolut i PayPal.
-- Pełny build `clean testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug` zakończył się powodzeniem osobno dla 1.0 i 1.01.
+- Pełny build `clean testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug` zakończył się powodzeniem osobno dla 1.0 i 1.01, a po przeniesieniu lokalnej dystrybucji Gradle został ponownie wykonany z sukcesem przez dołączony `gradlew.bat`.
 - APK 1.0: 2 719 126 bajtów; SHA-256 `247D9D048364A52B9338AA027F30DA3F9BD4CDB2605B799686900426C21D47EE`.
 - APK 1.01: 2 719 130 bajtów; SHA-256 `022F4F99256169F992E20B91AF831B5BA951975941B8EB20B8B3047D8170CE1B`.
 - Pakiet: `pl.proszczok.pixelspeecheq`; podpis jest identyczny z 1.20: certyfikat SHA-256 `C033826456D8A38F662306C5D3253EF0A7B8B4D19582DD50408D0861CD4CC41E`.
 - Telefon nie był podłączony i zgodnie z decyzją użytkownika nie był potrzebny do tej migracji. Test urządzeniowy pozostaje zakresem wcześniejszych wydań.
 - Wersja 1.01 służy do praktycznego sprawdzenia ścieżki aktualizacji 1.0 → 1.01 przez GitHub Releases.
+- Jedynym publicznym kanałem aktualizacji jest GitHub. Manifest i APK Pixel Center zostały usunięte ze starego serwera `proszczok.pl`; znajdujące się niżej stare adresy są wyłącznie zapisem historycznym i nie są już aktywnym kanałem.
+- W aktywnym projekcie pozostawiono źródła, Git, Gradle Wrapper, dokumentację, narzędzia, manifest GitHub i tylko najnowszy lokalny `Pixel Center 1.01.apk`. Starsze APK, checkpoint, ZIP źródłowy Pixelate i wyniki kompilacji przeniesiono do `F:\pixel center\niepotrzebne`, który nie jest wymagany do dalszej pracy i może zostać usunięty.
 
 Poniżej zachowano historyczny dziennik poprzednich wydań.
 

@@ -17,7 +17,7 @@ Bezpieczna kolejność wydania:
 3. Niezależnie pobierz publiczny plik i potwierdź jego wersję, podpis i skrót.
 4. Dopiero na końcu zaktualizuj manifest na `main`.
 
-Stary manifest na `proszczok.pl` może pozostać wyłącznie jako most migracyjny dla wersji, które jeszcze sprawdzają poprzedni adres. Wskazuje on na aktualne APK z GitHub Releases.
+Jedynym publicznym kanałem aktualizacji jest GitHub. Poprzedni manifest i APK na `proszczok.pl` zostały wycofane i nie powinny być ponownie publikowane. Wersję sprzed migracji trzeba najpierw zaktualizować ręcznie z GitHub Releases.
 
 ## English
 
@@ -25,4 +25,4 @@ Pixel Center reads a public manifest from the `main` branch at the URL shown abo
 
 Before installation, the downloaded file's SHA-256, package name, version code, and signing certificate must match. Installation still requires explicit confirmation in Android's system package installer.
 
-Publish the release asset first, verify the public download independently, and update the `main` manifest last. The legacy manifest on `proszczok.pl` may remain only as a migration bridge for older installations and must point to the current GitHub release asset.
+Publish the release asset first, verify the public download independently, and update the `main` manifest last. GitHub is the only public update channel. The legacy manifest and APK on `proszczok.pl` have been retired and must not be republished; pre-migration installations require one manual update from GitHub Releases.

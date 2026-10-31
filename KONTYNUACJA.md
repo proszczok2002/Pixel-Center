@@ -23,7 +23,7 @@ Wynik: `app/build/outputs/apk/debug/app-debug.apk`.
 - Używaj tego samego klucza podpisującego, ponieważ updater odrzuca inny certyfikat.
 - Najpierw opublikuj i niezależnie sprawdź APK w GitHub Releases, a manifest na `main` zmień na końcu.
 - Potwierdź publiczny manifest, rozmiar, SHA-256, pakiet, wersję i podpis pobranego APK.
-- Stary manifest na `proszczok.pl` aktualizuj tylko jako most dla wersji sprzed migracji.
+- Jedynym publicznym kanałem aktualizacji jest GitHub. Nie publikuj manifestu ani APK Pixel Center na starym serwerze `proszczok.pl`.
 
 ## Porządek lokalny
 
