@@ -2,6 +2,7 @@
 
 ## Aktualny stan — migracja na GitHub, 2026-10-31
 
+- Poprawiono kodowanie opisów wydań GitHub `v1.0` i `v1.01`; polskie znaki oraz typograficzne cudzysłowy są zapisane i publicznie odczytywane jako UTF-8 bez znaków zastępczych.
 - Publiczne repozytorium: `https://github.com/proszczok2002/Pixel-Center`.
 - Wydano pierwszą stabilną wersję GitHub 1.0 (`versionCode=28`) i przygotowano aktualizację kontrolną 1.01 (`versionCode=29`).
 - Updater odczytuje manifest z `raw.githubusercontent.com` i przyjmuje wyłącznie APK z wydań `proszczok2002/Pixel-Center`.
