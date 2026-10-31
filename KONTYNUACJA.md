@@ -29,4 +29,4 @@ Wynik: `app/build/outputs/apk/debug/app-debug.apk`.
 
 W aktywnym projekcie zostają źródła, dokumentacja, konfiguracja, narzędzia, manifest updatera i tylko najnowszy lokalny APK. Stare APK, archiwa kontrolne oraz katalogi wynikowe należy przenosić odwracalnie do sąsiedniego folderu `niepotrzebne`, zachowując ścieżki względne. Folder `niepotrzebne` nie jest wymagany do dalszej pracy i może zostać usunięty przez użytkownika.
 
-Kod źródłowy Pixelate 1.4.2 użyty przy module ostatnich aplikacji został dostarczony osobno i zintegrowany za zgodą autora. Interfejs modułu pozostaje interfejsem Pixel Center.
+Kod źródłowy [Pixelate 1.4.2](https://github.com/Pates2004/Pixelate) autorstwa [@Pates2004](https://github.com/Pates2004), użyty przy module ostatnich aplikacji, został zintegrowany za zgodą autora. Interfejs modułu pozostaje interfejsem Pixel Center.

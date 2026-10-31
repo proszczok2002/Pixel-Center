@@ -15,6 +15,7 @@
 - Wersja 1.01 służy do praktycznego sprawdzenia ścieżki aktualizacji 1.0 → 1.01 przez GitHub Releases.
 - Jedynym publicznym kanałem aktualizacji jest GitHub. Manifest i APK Pixel Center zostały usunięte ze starego serwera `proszczok.pl`; znajdujące się niżej stare adresy są wyłącznie zapisem historycznym i nie są już aktywnym kanałem.
 - W aktywnym projekcie pozostawiono źródła, Git, Gradle Wrapper, dokumentację, narzędzia, manifest GitHub i tylko najnowszy lokalny `Pixel Center 1.01.apk`. Starsze APK, checkpoint, ZIP źródłowy Pixelate i wyniki kompilacji przeniesiono do `F:\pixel center\niepotrzebne`, który nie jest wymagany do dalszej pracy i może zostać usunięty.
+- Autor modułu źródłowego Pixelate został oznaczony jako [@Pates2004](https://github.com/Pates2004), z bezpośrednim linkiem do [repozytorium Pixelate](https://github.com/Pates2004/Pixelate).
 
 Poniżej zachowano historyczny dziennik poprzednich wydań.
 
