@@ -2,14 +2,15 @@
 
 Aktualny kod, dokumentacja i historia zmian znajdują się w tym repozytorium. Publiczne wydania są publikowane w `https://github.com/proszczok2002/Pixel-Center/releases`, a aktywny manifest updatera jest w `server/pixel-center-update.json` na gałęzi `main`.
 
-## Bieżący kandydat 1.02
+## Bieżące wydanie 1.02
 
 - Kod ma `versionName=1.02` i `versionCode=30`.
 - Lokalny instalator: `Pixel Center 1.02.apk`, SHA-256 `A3C34A8F372C45B161961B0135B44BFBC6AEE9A260BD6AE647F7D6994EFB6F22`.
 - Zintegrowano działanie Pixelate 1.4.3 bez zmiany grafiki nakładki Pixel Center.
 - Pełna kompilacja, 4 testy jednostkowe, APK AndroidTest i Lint przeszły 2026-11-13.
-- Telefon nie był podłączony, więc przed publikacją warto sprawdzić na fizycznym Pixelu pojawienie się przycisku, czyszczenie długiej listy oraz brak nakładki na ekranie głównym.
-- Kandydat nie jest jeszcze wydaniem publicznym. Nie zmieniaj manifestu updatera, dopóki APK 1.02 nie zostanie opublikowany i niezależnie sprawdzony w GitHub Releases.
+- Wydanie publiczne: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.02`; aktywny manifest wskazuje 1.02/code 30.
+- Publiczny APK został niezależnie pobrany i sprawdzony pod kątem rozmiaru, SHA-256, pakietu, wersji i certyfikatu.
+- Telefon nie był podłączony, więc fizyczny test pojawienia się przycisku, czyszczenia długiej listy oraz braku nakładki na ekranie głównym nadal pozostaje do wykonania.
 
 ## Środowisko
 

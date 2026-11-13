@@ -9,11 +9,12 @@
 - Otwarte okno Pixel Center odświeża stan po połączeniu i zakończeniu usługi. Opis dostępności przycisku odpowiada teraz stanowi zwykłemu lub „Zamykanie aplikacji…”, a nazwa panelu odświeża się po zmianie konfiguracji.
 - Wygląd `OverlayController` pozostał bez zmian: przezroczyste tło, kolory systemowe Pixela, płaski kształt, ikona siatki, typografia, rozmiar, położenie i pełna etykieta `Zamknij wszystkie aplikacje` są zachowane.
 - Dodano cztery testy jednostkowe reguły urządzeń oraz zgodność ze starszymi nazwami emulatorów Google bez dopuszczania fizycznych urządzeń innych producentów.
-- Kandydat lokalny: `Pixel Center 1.02.apk`, `versionCode=30`, pakiet `pl.proszczok.pixelspeecheq`, 2 720 950 bajtów, SHA-256 `A3C34A8F372C45B161961B0135B44BFBC6AEE9A260BD6AE647F7D6994EFB6F22`.
+- Wydanie lokalne i publiczne: `Pixel Center 1.02.apk`, `versionCode=30`, pakiet `pl.proszczok.pixelspeecheq`, 2 720 950 bajtów, SHA-256 `A3C34A8F372C45B161961B0135B44BFBC6AEE9A260BD6AE647F7D6994EFB6F22`.
 - Pełny build `clean testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug` zakończył się powodzeniem: 4/4 testy jednostkowe, 0 błędów, 0 pominiętych; Lint: 0 błędów i 55 ostrzeżeń istniejącej klasy jakości.
 - APK ma `minSdk=28`, `targetSdk=37`, Android 17 oraz ten sam certyfikat SHA-256 `C033826456D8A38F662306C5D3253EF0A7B8B4D19582DD50408D0861CD4CC41E`, więc technicznie może aktualizować 1.01.
 - Telefon nie był podłączony (`adb devices` nie zwrócił urządzeń), dlatego nie wykonano instalacji ani fizycznego testu Ostatnich.
-- Wersja 1.02 nie została jeszcze opublikowana. GitHub Releases i `server/pixel-center-update.json` nadal wskazują publiczną wersję 1.01; starego kanału `proszczok.pl` nie przywrócono.
+- Wersję 1.02 opublikowano jako [GitHub Release v1.02](https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.02). Publiczny APK pobrano ponownie i potwierdzono jego rozmiar, SHA-256, pakiet, wersję oraz zgodny certyfikat.
+- `server/pixel-center-update.json` wskazuje 1.02/code 30 i publiczny APK z GitHub Releases. Starego kanału `proszczok.pl` nie przywrócono.
 - Lokalny APK 1.01 oraz katalogi wynikowe z weryfikacji przeniesiono odwracalnie do `F:\pixel center\niepotrzebne\2026-11-13-Pixel-Center-1.02`. Folder nie jest wymagany do dalszej pracy i może zostać usunięty.
 
 ## Stan wydania 1.01 — migracja na GitHub, 2026-10-31
