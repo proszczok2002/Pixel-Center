@@ -42,6 +42,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
+
 public final class MainActivity extends Activity {
     private static final int COLOR_BACKGROUND = Color.rgb(12, 12, 14);
     private static final int COLOR_CARD = Color.rgb(29, 29, 34);
@@ -56,6 +58,7 @@ public final class MainActivity extends Activity {
     private static final int TAB_RECENTS = 3;
     private static final int TAB_INFO = 4;
     private static final long TIMEOUT_AUTO_SAVE_DELAY_MS = 900;
+    private static WeakReference<MainActivity> resumedActivity = new WeakReference<>(null);
 
     private TextView status;
     private final int[] presetIds = new int[3];
@@ -107,6 +110,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        resumedActivity = new WeakReference<>(this);
         if (!volumePreferencesRegistered && pixelatePrefs != null) {
             pixelatePrefs.registerOnSharedPreferenceChangeListener(
                     volumePreferenceListener);
@@ -117,6 +121,9 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onPause() {
+        if (resumedActivity.get() == this) {
+            resumedActivity.clear();
+        }
         if (volumePreferencesRegistered && pixelatePrefs != null) {
             pixelatePrefs.unregisterOnSharedPreferenceChangeListener(
                     volumePreferenceListener);
@@ -124,6 +131,13 @@ public final class MainActivity extends Activity {
         }
         persistTimeout(false);
         super.onPause();
+    }
+
+    static void onServiceConnectionChanged() {
+        MainActivity activity = resumedActivity.get();
+        if (activity != null) {
+            activity.refreshImprovedUi();
+        }
     }
 
     @Override
@@ -756,7 +770,7 @@ public final class MainActivity extends Activity {
         content.addView(settingsCard, cardParams());
 
         TextView privacy = text(
-                "Moduł nie używa internetu, alarmów ani blokady wybudzenia. Poza ekranem Ostatnich reaguje tylko na zmianę aktywnego okna oraz — jeśli włączysz sterowanie muzyką — na przyciski głośności przy wygaszonym ekranie.",
+                "Moduł nie używa internetu, alarmów ani blokady wybudzenia. Po zmianie okna może przez maksymalnie 2,5 sekundy ponawiać wykrywanie Ostatnich; nie skanuje stale zwykłych aplikacji. Jeśli włączysz sterowanie muzyką, reaguje też na przyciski głośności przy wygaszonym ekranie.",
                 13, Color.rgb(155, 155, 165));
         privacy.setPadding(0, dp(16), 0, 0);
         content.addView(privacy, matchWrap());

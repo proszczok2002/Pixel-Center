@@ -21,8 +21,11 @@ final class DeviceSupport {
             return false;
         }
         String normalizedModel = normalize(model);
+        boolean sdkModel = normalizedModel.startsWith("sdk_gphone")
+                || normalizedModel.equals("android sdk built for x86")
+                || normalizedModel.equals("android sdk built for x86_64");
         return normalizedModel.startsWith("pixel")
-                || (googleSdkEmulator && normalizedModel.startsWith("sdk_gphone"));
+                || (googleSdkEmulator && sdkModel);
     }
 
     private static boolean isGoogleSdkEmulator() {

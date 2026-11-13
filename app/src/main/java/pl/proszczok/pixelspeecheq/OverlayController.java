@@ -85,6 +85,8 @@ final class OverlayController {
     void setBusy(boolean busy) {
         button.setEnabled(!busy);
         button.setText(busy ? R.string.overlay_clearing : R.string.overlay_clear_all);
+        button.setContentDescription(service.getString(
+                busy ? R.string.overlay_clearing : R.string.overlay_clear_all));
         button.setAlpha(busy ? 0.82f : 1f);
         if (busy) {
             button.announceForAccessibility(service.getString(R.string.overlay_clearing));
@@ -98,6 +100,11 @@ final class OverlayController {
     }
 
     void onConfigurationChanged() {
+        if (button != null && params != null) {
+            String title = service.getString(R.string.overlay_window_title);
+            button.setAccessibilityPaneTitle(title);
+            params.setTitle(title);
+        }
         if (!shown || windowManager == null) {
             return;
         }

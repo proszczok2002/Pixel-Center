@@ -12,13 +12,17 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityWindowInfo;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 public final class PixelateAccessibilityService extends AccessibilityService
         implements OverlayController.Listener, ClearAllController.Listener {
     private static final String TAG = "PixelCenterMedia";
     private static final long OVERVIEW_STABLE_MS = 300;
+    private static final long WINDOW_RECOVERY_MS = 2500;
+    private static final long WINDOW_RETRY_MS = 250;
     private static final long MEDIA_LONG_PRESS_MS = 500;
     private static final long MEDIA_WAKE_LOCK_TIMEOUT_MS = 2000;
     private static final int IDLE_EVENT_TYPES = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
@@ -38,6 +42,8 @@ public final class PixelateAccessibilityService extends AccessibilityService
     private ClearAllController clearer;
     private boolean connected;
     private boolean evaluationScheduled;
+    private long evaluationDueAt;
+    private long windowRecoveryUntil;
     private boolean eventMonitoringInitialized;
     private boolean monitoringOverviewContent;
     private boolean suppressUntilOverviewExit;
@@ -76,13 +82,20 @@ public final class PixelateAccessibilityService extends AccessibilityService
         clearer = new ClearAllController(this, this);
         ScreenOffMediaService.sync(this);
         updateEventMonitoring(false);
+        windowRecoveryUntil = SystemClock.uptimeMillis() + WINDOW_RECOVERY_MS;
         scheduleEvaluation(250);
+        MainActivity.onServiceConnectionChanged();
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (!connected) {
             return;
+        }
+        if ((event.getEventType() & IDLE_EVENT_TYPES) != 0
+                && !getPackageName().contentEquals(
+                        event.getPackageName() == null ? "" : event.getPackageName())) {
+            windowRecoveryUntil = SystemClock.uptimeMillis() + WINDOW_RECOVERY_MS;
         }
         scheduleEvaluation(80);
     }
@@ -171,6 +184,7 @@ public final class PixelateAccessibilityService extends AccessibilityService
         if (current.get() == this) {
             current.clear();
         }
+        MainActivity.onServiceConnectionChanged();
         cancelWork();
         cancelMediaGesture();
         if (overlay != null) {
@@ -207,11 +221,12 @@ public final class PixelateAccessibilityService extends AccessibilityService
         if (!connected || overlay == null) {
             return;
         }
+        List<AccessibilityWindowInfo> windows = getWindows();
         boolean overview = OverviewDetector.isOverviewVisible(
-                getWindows(), getPackageName(), this);
+                windows, getPackageName(), this);
         updateEventMonitoring(overview);
         boolean tasks = overview && OverviewDetector.hasRecentTasks(
-                getWindows(), getPackageName(), this);
+                windows, getPackageName(), this);
         if (!overview) {
             overviewVisibleSince = 0;
             suppressUntilOverviewExit = false;
@@ -240,13 +255,24 @@ public final class PixelateAccessibilityService extends AccessibilityService
                 }
             }
         }
+        // Zdarzenie okna może wyprzedzić gotowość drzewa dostępności. Ponawiamy
+        // wyłącznie podczas krótkiego przejścia i tylko, gdy launcher albo brak
+        // drzewa może jeszcze zmienić się w widok Ostatnich.
+        long retryRemaining = windowRecoveryUntil - SystemClock.uptimeMillis();
+        if ((!overview || !tasks) && retryRemaining > 0
+                && OverviewDetector.mayBeOverviewPending(windows, getPackageName())) {
+            scheduleEvaluation(Math.min(WINDOW_RETRY_MS, retryRemaining));
+        }
     }
 
     private void scheduleEvaluation(long delayMs) {
-        if (evaluationScheduled) {
+        long dueAt = SystemClock.uptimeMillis() + delayMs;
+        if (evaluationScheduled && evaluationDueAt <= dueAt) {
             return;
         }
+        handler.removeCallbacks(evaluateRunnable);
         evaluationScheduled = true;
+        evaluationDueAt = dueAt;
         handler.postDelayed(evaluateRunnable, delayMs);
     }
 
@@ -268,6 +294,7 @@ public final class PixelateAccessibilityService extends AccessibilityService
     private void cancelWork() {
         handler.removeCallbacks(evaluateRunnable);
         evaluationScheduled = false;
+        windowRecoveryUntil = 0;
         cancelClearOperation();
     }
 

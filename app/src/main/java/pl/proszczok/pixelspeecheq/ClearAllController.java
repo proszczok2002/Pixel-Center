@@ -152,7 +152,9 @@ final class ClearAllController {
 
         if (scrolled) {
             Log.d(TAG, "Krok " + attempts + ": przewiniecie dostepnosci");
-            schedule(135);
+            // Android 9/10 Quickstep zatwierdza stronę dopiero po zakończeniu
+            // animacji. Zbyt szybkie ponowienie uruchamiało tę samą stronę.
+            schedule(Build.VERSION.SDK_INT < Build.VERSION_CODES.R ? 600 : 135);
         } else {
             Log.d(TAG, "Krok " + attempts + ": gest awaryjny");
             dispatchSwipeTowardClearAll();

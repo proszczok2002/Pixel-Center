@@ -37,7 +37,7 @@ Wsparcie jest dobrowolne i nie wpływa na dostępność funkcji ani aktualizacji
 
 ## Podziękowania, autorstwo i kod
 
-Szczególne podziękowania dla [@Pates2004](https://github.com/Pates2004), autora projektu [Pixelate 1.4.2](https://github.com/Pates2004/Pixelate), którego logika stanowi podstawę modułu „Zamknij wszystkie aplikacje”. Kod został zintegrowany za zgodą autora, a Pixel Center zachowuje własny interfejs tego modułu.
+Szczególne podziękowania dla [@Pates2004](https://github.com/Pates2004), autora projektu [Pixelate 1.4.3](https://github.com/Pates2004/Pixelate/releases/tag/v1.4.3), którego logika stanowi podstawę modułu „Zamknij wszystkie aplikacje”. Kod został zintegrowany za zgodą autora, a Pixel Center zachowuje własny interfejs tego modułu.
 
 Repozytorium zawiera kod Pixel Center i dokumentację projektu. Brak pliku licencji oznacza, że nie udzielono automatycznie prawa do redystrybucji ani tworzenia własnych wydań poza uprawnieniami wynikającymi z prawa lub odrębnej zgody właścicieli kodu.
 
@@ -67,4 +67,4 @@ Building requires JDK 17 and Android SDK 37. Set `ANDROID_HOME` or create a loca
 
 Voluntary support: [Revolut](https://revolut.me/r_rosiejka) or [PayPal](https://paypal.me/proszczok). Support does not affect access to features or updates.
 
-Special thanks to [@Pates2004](https://github.com/Pates2004), the author of [Pixelate 1.4.2](https://github.com/Pates2004/Pixelate), whose logic forms the basis of the “Close all apps” module. The code was integrated with the author's permission while retaining Pixel Center's own interface.
+Special thanks to [@Pates2004](https://github.com/Pates2004), the author of [Pixelate 1.4.3](https://github.com/Pates2004/Pixelate/releases/tag/v1.4.3), whose logic forms the basis of the “Close all apps” module. The code was integrated with the author's permission while retaining Pixel Center's own interface.

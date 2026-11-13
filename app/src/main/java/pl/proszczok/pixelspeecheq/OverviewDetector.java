@@ -30,6 +30,32 @@ final class OverviewDetector {
     private OverviewDetector() {
     }
 
+    static boolean mayBeOverviewPending(
+            List<AccessibilityWindowInfo> windows, String ownPackage) {
+        if (windows == null || windows.isEmpty()) {
+            return true;
+        }
+        for (AccessibilityWindowInfo window : windows) {
+            if (!isInspectableWindow(window) || (!window.isActive() && !window.isFocused())) {
+                continue;
+            }
+            AccessibilityNodeInfo root = window.getRoot();
+            if (root == null) {
+                return true;
+            }
+            try {
+                String pkg = string(root.getPackageName());
+                if (TextUtils.equals(ownPackage, pkg)) {
+                    return false;
+                }
+                return isLauncherPackage(pkg);
+            } finally {
+                root.recycle();
+            }
+        }
+        return false;
+    }
+
     static boolean isOverviewVisible(
             List<AccessibilityWindowInfo> windows, String ownPackage, Context context) {
         if (windows == null) {
@@ -212,15 +238,19 @@ final class OverviewDetector {
 
     private static boolean looksLikeOverviewRoot(AccessibilityNodeInfo root) {
         String pkg = lower(root.getPackageName());
-        boolean launcher = pkg.contains("launcher") || pkg.contains("quickstep")
-                || pkg.equals("com.google.android.apps.nexuslauncher")
-                || pkg.equals("com.android.systemui")
-                || pkg.equals("com.android.wm.shell");
-        if (!launcher) {
+        if (!isLauncherPackage(pkg)) {
             return false;
         }
         int score = scoreTree(root, new int[]{NODE_BUDGET});
         return score >= 3;
+    }
+
+    private static boolean isLauncherPackage(String packageName) {
+        String pkg = lower(packageName);
+        return pkg.contains("launcher") || pkg.contains("quickstep")
+                || pkg.equals("com.google.android.apps.nexuslauncher")
+                || pkg.equals("com.android.systemui")
+                || pkg.equals("com.android.wm.shell");
     }
 
     private static boolean looksLikeOverviewWindow(
@@ -239,6 +269,34 @@ final class OverviewDetector {
         for (String candidate : getLocalizedOverviewTitles(context, packageName)) {
             if (title.equals(candidate)) {
                 return true;
+            }
+        }
+        // Starszy Quickstep zachowuje w Ostatnich ogólny tytuł launchera.
+        // Akceptujemy jawny, widoczny kontener Ostatnich, nigdy sam pakiet launchera.
+        return hasVisibleOverviewContainer(root, new int[]{NODE_BUDGET});
+    }
+
+    private static boolean hasVisibleOverviewContainer(
+            AccessibilityNodeInfo node, int[] remaining) {
+        if (node == null || remaining[0]-- <= 0) {
+            return false;
+        }
+        String id = lower(node.getViewIdResourceName());
+        if (node.isVisibleToUser()
+                && (isResourceId(id, "overview_panel") || isResourceId(id, "recents_view"))) {
+            return true;
+        }
+        for (int i = 0; i < node.getChildCount() && remaining[0] > 0; i++) {
+            AccessibilityNodeInfo child = node.getChild(i);
+            if (child == null) {
+                continue;
+            }
+            try {
+                if (hasVisibleOverviewContainer(child, remaining)) {
+                    return true;
+                }
+            } finally {
+                child.recycle();
             }
         }
         return false;
