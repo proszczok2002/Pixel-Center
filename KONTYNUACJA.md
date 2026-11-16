@@ -9,7 +9,7 @@ Aktualny kod, dokumentacja i historia zmian znajdują się w tym repozytorium. P
 - Dolne zakładki, duża czcionka, poziom, PL/EN/DE/RU/ES/FR/IT; logika Pixelate 1.4.3 pozostaje zintegrowana.
 - Build, 5 testów jednostkowych, APK AndroidTest i Lint (0 błędów, 18 ostrzeżeń) przeszły 2026-11-16.
 - Testy na Pixelu 11 z TalkBackiem oraz zakres nieprzetestowany opisuje `docs/ACCESSIBILITY-1.03.md`. Końcowy APK na telefonie ma identyczny hash z wydaniem. Należy jeszcze wykonać odsłuch i ręczny odbiór gestów.
-- Docelowe wydanie: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; stan publikacji i weryfikacji jest w najnowszym wpisie `STAN_PRAC.md`.
+- Opublikowane wydanie: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; manifest GitHub wskazuje 1.03/code 31, pobrany publiczny APK ma zgodny rozmiar, hash i podpis. Stan publikacji, telefonu i porządków zapisano w `STAN_PRAC.md`.
 
 ## Środowisko
 

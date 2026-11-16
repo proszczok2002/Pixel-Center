@@ -14,7 +14,8 @@
 - Publikacja 1.03: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; plik `Pixel-Center-1.03-20261116.apk`. Publiczny APK pobrano niezależnie: zgodne 3 016 562 bajty, SHA-256, pakiet, 1.03/code 31 i certyfikat. Manifest przełączono dopiero po tym sprawdzeniu. Jedynym kanałem pozostaje GitHub.
 - Publiczny manifest wskazuje 1.03/code 31 i zawiera opisy zmian dla siedmiu języków. URL APK zawiera `?download=1`, zweryfikowany pełnym pobraniem i porównaniem hash; omija zapamiętane początkowe 404 świeżego zasobu. GitHub `releases/latest` wskazuje v1.03.
 - Pomocnik audytu usunięty z telefonu. Czcionka 1.0, pion/obrót 0, język aplikacji systemowy, trzy pierwotne usługi dostępności aktywne, brak uszkodzonych usług; telefon pozostawiony na ekranie głównym.
-- Porządki: stare APK 1.02, katalogi wynikowe `.gradle`, `build`, `app/build`, `audit-driver/build` i lokalne dowody `audit` przenosimy odwracalnie do `F:\pixel center\niepotrzebne\2026-11-16-Pixel-Center-1.03`. Źródła, Git, SDK, Gradle, dokumentacja, manifest i najnowszy APK 1.03 pozostają do dalszej pracy; raport audytu w repozytorium jest trwałym podsumowaniem.
+- Porządki wykonane: stare APK 1.02, katalogi wynikowe `.gradle`, `build`, `app/build`, `audit-driver/build` i lokalne dowody `audit` przeniesiono odwracalnie do `F:\pixel center\niepotrzebne\2026-11-16-Pixel-Center-1.03`. Źródła, Git, SDK, Gradle, dokumentacja, manifest i najnowszy APK 1.03 pozostają do dalszej pracy; raport audytu w repozytorium jest trwałym podsumowaniem.
+- Końcowy publiczny manifest, dokładny URL APK używany przez updater oraz hash zweryfikowane po ostatnim pushu. Opis wydania GitHub sprawdzony jako UTF-8; stary manifest na `proszczok.pl` nadal HTTP 404. Repozytorium po publikacji i porządkach jest czyste.
 
 ## Aktualny stan — integracja Pixelate 1.4.3, 2026-11-13
 
