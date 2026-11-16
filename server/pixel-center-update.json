@@ -1,9 +1,18 @@
 {
   "appId": "pl.proszczok.pixelspeecheq",
-  "versionCode": 30,
-  "versionName": "1.02",
-  "apkUrl": "https://github.com/proszczok2002/Pixel-Center/releases/download/v1.02/Pixel-Center-1.02-20261113.apk",
-  "changelog": "Zintegrowano dzia\u0142anie Pixelate 1.4.3: odzyskiwanie op\u00f3\u017anionego drzewa Ostatnich, zgodno\u015b\u0107 ze starszym Pixel Launcherem i poprawione przewijanie na Androidzie 9/10. Zachowano wygl\u0105d przycisku Pixel Center.",
-  "publishedAt": "2026-11-13",
-  "sha256": "A3C34A8F372C45B161961B0135B44BFBC6AEE9A260BD6AE647F7D6994EFB6F22"
+  "versionCode": 31,
+  "versionName": "1.03",
+  "apkUrl": "https://github.com/proszczok2002/Pixel-Center/releases/download/v1.03/Pixel-Center-1.03-20261116.apk",
+  "changelog": "Dolne zakładki z obsługą TalkBacka, układ dla dużej czcionki, poprawki widoku w poziomie oraz siedem języków: polski, angielski, niemiecki, rosyjski, hiszpański, francuski i włoski.",
+  "changelogI18n": {
+    "pl": "Dolne zakładki z obsługą TalkBacka, układ dla dużej czcionki, poprawki widoku w poziomie oraz siedem języków. Wybór języka w zakładce Więcej.",
+    "en": "Bottom tabs with TalkBack support, a large-text layout, landscape fixes, and seven languages. Language settings are under More.",
+    "de": "Untere Registerkarten mit TalkBack-Unterstützung, Layout für große Schrift, Querformat-Korrekturen und sieben Sprachen. Spracheinstellungen unter Mehr.",
+    "ru": "Нижние вкладки с поддержкой TalkBack, интерфейс для крупного шрифта, исправления альбомного режима и семь языков. Настройки языка находятся в разделе «Ещё».",
+    "es": "Pestañas inferiores compatibles con TalkBack, diseño para texto grande, correcciones en horizontal y siete idiomas. Los ajustes de idioma están en Más.",
+    "fr": "Onglets inférieurs compatibles avec TalkBack, disposition pour les grands caractères, corrections en paysage et sept langues. Réglage de la langue dans Plus.",
+    "it": "Schede inferiori con supporto TalkBack, layout per caratteri grandi, correzioni in orizzontale e sette lingue. Impostazioni della lingua in Altro."
+  },
+  "publishedAt": "2026-11-16",
+  "sha256": "5BDAEDC4CD0228221D6AC770C879DC689176F57B7E3DEE25FFC133CF8FA19C17"
 }

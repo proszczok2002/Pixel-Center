@@ -11,7 +11,7 @@
 - Przywrócono EQ włączony/profil lekki, noc wyłączona, media włączone, fokus automatyczny wyłączony, 20 sekund, język systemowy PL, font 1.0, pion/obrót automatyczny wyłączony. TalkBack, AutoGłośnik i Pixel Center aktywne; `Crashed services:{}`.
 - Build: `testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug`; 5/5 testów jednostkowych, Lint 0 błędów i 18 ostrzeżeń. Nie uruchamiano całej instrumentacji fizycznych klawiszy.
 - Raport zakresu: `docs/ACCESSIBILITY-1.03.md`; brak odsłuchu mowy i ręcznych gestów osoby niewidomej. Nie deklarujemy pełnego odbioru fizycznych gestów, głosów, każdej aplikacji multimedialnej i słuchawek Bluetooth.
-- Publikacja 1.03: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; plik `Pixel-Center-1.03-20261116.apk`. Status publicznego sprawdzenia i manifestu zostanie dopisany po pobraniu publicznego APK. Jedynym kanałem pozostaje GitHub.
+- Publikacja 1.03: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; plik `Pixel-Center-1.03-20261116.apk`. Publiczny APK pobrano niezależnie: zgodne 3 016 562 bajty, SHA-256, pakiet, 1.03/code 31 i certyfikat. Manifest przełączono dopiero po tym sprawdzeniu. Jedynym kanałem pozostaje GitHub.
 
 ## Aktualny stan — integracja Pixelate 1.4.3, 2026-11-13
 
