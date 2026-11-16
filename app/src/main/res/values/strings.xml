@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pixel Center</string>
-    <string name="recents_service_label">Pixel Center — sterowanie telefonu</string>
-    <string name="recents_service_description">Pokazuje przycisk „Zamknij wszystkie aplikacje” na systemowym ekranie ostatnich aplikacji. Gdy użytkownik włączy sterowanie muzyką, usługa reaguje na długie naciśnięcia przycisków głośności wyłącznie przy wygaszonym ekranie. Nie zapisuje ani nie wysyła treści ekranu ani naciśnięć przycisków.</string>
-    <string name="unsupported_service_disabled">Usługa Pixel Center została wyłączona, ponieważ urządzenie nie jest obsługiwanym Google Pixelem.</string>
-    <string name="overlay_clear_all">Zamknij wszystkie aplikacje</string>
-    <string name="overlay_clearing">Zamykanie aplikacji…</string>
-    <string name="overlay_window_title">Pixel Center — Ostatnie aplikacje</string>
-    <string name="clear_success">Zamknięto ostatnie aplikacje</string>
-    <string name="clear_failure">Upłynął czas szukania systemowego przycisku. Możesz spróbować ponownie.</string>
-    <string name="clear_no_tasks">Nie znaleziono aplikacji do zamknięcia</string>
+    <string name="recents_service_label">Pixel Center — phone controls</string>
+    <string name="recents_service_description">Shows a “Close all apps” button on the system Recents screen. When media controls are enabled, the service responds to long presses of the volume buttons only while the screen is off. It does not store or transmit screen contents or button presses.</string>
+    <string name="player_monitor_service_label">Pixel Center — player detection</string>
+    <string name="unsupported_service_disabled">The Pixel Center service was disabled because this device is not a supported Google Pixel.</string>
+    <string name="overlay_clear_all">Close all apps</string>
+    <string name="overlay_clearing">Closing apps…</string>
+    <string name="overlay_window_title">Pixel Center — Recent apps</string>
+    <string name="clear_success">Recent apps closed</string>
+    <string name="clear_failure">The search for the system button timed out. You can try again.</string>
+    <string name="clear_no_tasks">No apps to close were found</string>
 </resources>

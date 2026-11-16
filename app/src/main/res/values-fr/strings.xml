@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel Center</string>
+    <string name="recents_service_label">Pixel Center — commande du téléphone</string>
+    <string name="recents_service_description">Affiche un bouton « Fermer toutes les applications » sur l’écran système des applications récentes. Lorsque les commandes multimédias sont activées, le service répond aux appuis longs sur les boutons de volume uniquement lorsque l’écran est éteint. Il n’enregistre ni ne transmet le contenu de l’écran ou les pressions sur les boutons.</string>
+    <string name="player_monitor_service_label">Pixel Center — détection du lecteur</string>
+    <string name="unsupported_service_disabled">Le service Pixel Center a été désactivé car cet appareil n’est pas un Google Pixel pris en charge.</string>
+    <string name="overlay_clear_all">Fermer toutes les applications</string>
+    <string name="overlay_clearing">Fermeture des applications…</string>
+    <string name="overlay_window_title">Pixel Center — Applications récentes</string>
+    <string name="clear_success">Applications récentes fermées</string>
+    <string name="clear_failure">Le délai de recherche du bouton système a expiré. Vous pouvez réessayer.</string>
+    <string name="clear_no_tasks">Aucune application à fermer</string>
+</resources>

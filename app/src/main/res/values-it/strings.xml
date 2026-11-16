@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel Center</string>
+    <string name="recents_service_label">Pixel Center — controllo del telefono</string>
+    <string name="recents_service_description">Mostra un pulsante «Chiudi tutte le app» nella schermata di sistema delle app recenti. Quando i controlli multimediali sono attivi, il servizio risponde alla pressione prolungata dei pulsanti del volume solo a schermo spento. Non salva né trasmette contenuti dello schermo o pressioni dei pulsanti.</string>
+    <string name="player_monitor_service_label">Pixel Center — rilevamento del lettore</string>
+    <string name="unsupported_service_disabled">Il servizio Pixel Center è stato disattivato perché questo dispositivo non è un Google Pixel supportato.</string>
+    <string name="overlay_clear_all">Chiudi tutte le app</string>
+    <string name="overlay_clearing">Chiusura delle app…</string>
+    <string name="overlay_window_title">Pixel Center — App recenti</string>
+    <string name="clear_success">App recenti chiuse</string>
+    <string name="clear_failure">La ricerca del pulsante di sistema è scaduta. Puoi riprovare.</string>
+    <string name="clear_no_tasks">Nessuna app da chiudere</string>
+</resources>

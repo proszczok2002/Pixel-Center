@@ -1,5 +1,25 @@
 # Historia zmian / Changelog
 
+## 1.03 — 2026-11-16
+
+### Polski
+
+- Pięć zakładek na dole ekranu, stale dostępnych bez przewijania poziomego; przy dużej czcionce dwa rzędy.
+- Role zakładek, zaznaczenie i przetłumaczone nazwy paneli dla TalkBacka; zachowane nagłówki, etykiety formularzy i stany przełączników.
+- Siedem języków: polski, angielski, niemiecki, rosyjski, hiszpański, francuski i włoski; systemowy wybór języka aplikacji od Androida 13.
+- Tłumaczenia interfejsu, komunikatów aktualizacji, usług, powiadomień oraz ogłoszenia nocnej głośności. Nakładka Ostatnich odświeża tekst po zmianie języka.
+- Lokalizowane opisy zmian z manifestu GitHub, z zachowaniem zgodności ze starszym updaterem.
+- Audyt na Pixelu 11 z Androidem 17 i aktywnym TalkBackiem; zakres i ograniczenia w `docs/ACCESSIBILITY-1.03.md`.
+
+### English
+
+- Five persistent bottom tabs without horizontal scrolling; two rows with large text.
+- Accessible tab roles, selected states, and localized pane names for TalkBack, preserving headings, form labels, and switch states.
+- Seven languages: Polish, English, German, Russian, Spanish, French, and Italian; Android 13+ per-app language settings.
+- Translated interface, update messages, services, notifications, and quiet-night announcement. The Recents overlay refreshes its text after a language change.
+- Localized GitHub manifest release notes, compatible with older updater versions.
+- Pixel 11 / Android 17 audit with TalkBack active; see `docs/ACCESSIBILITY-1.03.md` for coverage and limitations.
+
 ## 1.02 — 2026-11-13
 
 ### Polski

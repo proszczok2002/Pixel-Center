@@ -97,7 +97,7 @@ public final class EqService extends Service {
     }
 
     private void enableGlobal() {
-        startForeground(NOTIFICATION_ID, buildNotification("Profil mowy aktywny"));
+        startForeground(NOTIFICATION_ID, buildNotification(LocalizedText.text(this, "Korektor audiobooków")));
         if (globalEffect != null) {
             applyPreset(globalEffect);
             return;
@@ -105,10 +105,10 @@ public final class EqService extends Service {
         try {
             globalEffect = new Equalizer(EFFECT_PRIORITY, GLOBAL_SESSION);
             applyPreset(globalEffect);
-            updateStatus(describeEffect("Globalny EQ", globalEffect));
+            updateStatus(describeEffect("EQ", globalEffect));
         } catch (RuntimeException error) {
             globalEffect = null;
-            updateStatus("Globalny EQ niedostępny; czekam na sesję odtwarzacza: " + error.getClass().getSimpleName());
+            updateStatus(LocalizedText.format(this, "Globalny EQ niedostępny: %1$s", error.getClass().getSimpleName()));
             Log.w(TAG, "Global equalizer unavailable", error);
         }
     }
@@ -124,9 +124,9 @@ public final class EqService extends Service {
             Equalizer equalizer = new Equalizer(EFFECT_PRIORITY, sessionId);
             applyPreset(equalizer);
             sessionEffects.put(sessionId, equalizer);
-            updateStatus(describeEffect(shortName(packageName) + " / sesja " + sessionId, equalizer));
+            updateStatus(describeEffect(shortName(packageName) + " / " + sessionId, equalizer));
         } catch (RuntimeException error) {
-            updateStatus("Nie udało się podpiąć sesji " + sessionId + ": " + error.getClass().getSimpleName());
+            updateStatus(LocalizedText.format(this, "Nie udało się podpiąć sesji %1$d: %2$s", sessionId, error.getClass().getSimpleName()));
             Log.w(TAG, "Session equalizer unavailable: " + sessionId, error);
         }
     }
@@ -156,8 +156,7 @@ public final class EqService extends Service {
         for (Equalizer equalizer : sessionEffects.values()) {
             applyPreset(equalizer);
         }
-        String current = prefs.getString(PREF_STATUS, "EQ aktywny");
-        updateStatus(current + " | preset: " + presetName());
+        updateStatus(LocalizedText.format(this, "EQ aktywny | profil: %1$s", presetName()));
     }
 
     private String describeEffect(String target, Equalizer equalizer) {
@@ -167,7 +166,8 @@ public final class EqService extends Service {
             bands.append(equalizer.getCenterFreq(band) / 1000).append("Hz=")
                     .append(equalizer.getBandLevel(band) / 100.0f).append("dB");
         }
-        return target + " | sterowanie=" + equalizer.hasControl() + " | " + bands;
+        return LocalizedText.format(this, "%1$s | Sterowanie EQ: %2$s | %3$s", target,
+                LocalizedText.text(this, equalizer.hasControl() ? "Tak" : "Nie"), bands);
     }
 
     private void releaseSession(int sessionId) {
@@ -194,9 +194,9 @@ public final class EqService extends Service {
 
     private String presetName() {
         return switch (preset) {
-            case 0 -> "lekki";
-            case 2 -> "mocny";
-            default -> "średni";
+            case 0 -> LocalizedText.text(this, "Lekki");
+            case 2 -> LocalizedText.text(this, "Mocny");
+            default -> LocalizedText.text(this, "Średni");
         };
     }
 
@@ -208,7 +208,9 @@ public final class EqService extends Service {
     }
 
     private void updateStatus(String status) {
-        prefs.edit().putString(PREF_STATUS, status).apply();
+        status = LocalizedText.text(this, status);
+        prefs.edit().putString(PREF_STATUS, status)
+                .putString("status_language", LocalizedText.language(this)).apply();
         NotificationManager manager = getSystemService(NotificationManager.class);
         manager.notify(NOTIFICATION_ID, buildNotification(status));
         Log.i(TAG, status);
@@ -217,10 +219,9 @@ public final class EqService extends Service {
     private void createNotificationChannel() {
         NotificationChannel channel = new NotificationChannel(
                 CHANNEL_ID,
-                "Korektor audiobooków",
+                LocalizedText.text(this, "Korektor audiobooków"),
                 NotificationManager.IMPORTANCE_LOW
         );
-        channel.setDescription("Informuje, gdy profil mowy jest aktywny");
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
 

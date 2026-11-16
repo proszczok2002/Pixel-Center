@@ -594,7 +594,7 @@ public final class ScreenOffMediaService extends Service {
                 AccessibilityEvent.TYPE_ANNOUNCEMENT);
         event.setPackageName(getPackageName());
         event.setClassName(ScreenOffMediaService.class.getName());
-        event.getText().add("Cichy poziom nocny");
+        event.getText().add(LocalizedText.text(this, "Cichy poziom nocny"));
         manager.sendAccessibilityEvent(event);
         Log.d(TAG, "Ogłoszono: Cichy poziom nocny");
     }
@@ -742,9 +742,9 @@ public final class ScreenOffMediaService extends Service {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
         NotificationChannel channel = new NotificationChannel(
-                CHANNEL_ID, "Głośność i przyciski multimediów",
+                CHANNEL_ID, LocalizedText.text(this, "Głośność i przyciski multimediów"),
                 NotificationManager.IMPORTANCE_LOW);
-        channel.setDescription("Tryb nocny na słuchawkach Bluetooth i sterowanie na blokadzie");
+        channel.setDescription(LocalizedText.text(this, "Tryb nocny na słuchawkach BT i sterowanie na blokadzie"));
         getSystemService(NotificationManager.class).createNotificationChannel(channel);
     }
 
@@ -758,11 +758,17 @@ public final class ScreenOffMediaService extends Service {
                 : new Notification.Builder(this);
         return builder
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Pixel Center — głośność i przyciski")
-                .setContentText("Tryb nocny na słuchawkach BT i sterowanie na blokadzie")
+                .setContentTitle(LocalizedText.text(this, "Pixel Center — głośność i przyciski"))
+                .setContentText(LocalizedText.text(this, "Tryb nocny na słuchawkach BT i sterowanie na blokadzie"))
                 .setContentIntent(pendingIntent)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .setOngoing(true)
                 .build();
+    }
+
+    @Override public void onConfigurationChanged(android.content.res.Configuration configuration) {
+        super.onConfigurationChanged(configuration);
+        createNotificationChannel();
+        if (running) getSystemService(NotificationManager.class).notify(NOTIFICATION_ID, buildNotification());
     }
 }

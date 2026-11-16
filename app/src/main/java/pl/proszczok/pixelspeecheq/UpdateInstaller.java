@@ -47,7 +47,7 @@ final class UpdateInstaller {
         panel.setOrientation(LinearLayout.VERTICAL);
         panel.setPadding(padding, padding / 2, padding, 0);
         TextView state = new TextView(activity);
-        state.setText("Przygotowywanie pobierania…");
+        state.setText(LocalizedText.text(activity, "Przygotowywanie pobierania…"));
         state.setTextSize(16);
         ProgressBar progress = new ProgressBar(
                 activity, null, android.R.attr.progressBarStyleHorizontal);
@@ -61,9 +61,11 @@ final class UpdateInstaller {
 
         AtomicBoolean canceled = new AtomicBoolean(false);
         AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle("Aktualizacja Pixel Center " + info.versionName)
+                .setTitle(LocalizedText.format(activity,
+                        "Aktualizacja Pixel Center %1$s", info.versionName))
                 .setView(panel)
-                .setNegativeButton("Anuluj", (ignored, which) -> canceled.set(true))
+                .setNegativeButton(LocalizedText.text(activity, "Anuluj"),
+                        (ignored, which) -> canceled.set(true))
                 .setCancelable(false)
                 .create();
         dialog.show();
@@ -79,7 +81,8 @@ final class UpdateInstaller {
             launchInstaller(activity, UpdateFileProvider.updateFile(activity));
         } else {
             Toast.makeText(activity,
-                    "Zezwól Pixel Center na instalowanie aplikacji i spróbuj ponownie.",
+                    LocalizedText.text(activity,
+                            "Zezwól Pixel Center na instalowanie aplikacji i spróbuj ponownie."),
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -93,10 +96,12 @@ final class UpdateInstaller {
         try {
             File parent = target.getParentFile();
             if ((!parent.isDirectory() && !parent.mkdirs()) || !parent.isDirectory()) {
-                throw new IllegalStateException("Nie można utworzyć katalogu aktualizacji");
+                throw new IllegalStateException(LocalizedText.text(activity,
+                        "Nie można utworzyć katalogu aktualizacji."));
             }
             if (part.exists() && !part.delete()) {
-                throw new IllegalStateException("Nie można usunąć starego pobierania");
+                throw new IllegalStateException(LocalizedText.text(activity,
+                        "Nie można usunąć starego pobierania."));
             }
             connection = (HttpURLConnection) new URL(info.apkUrl).openConnection();
             connection.setInstanceFollowRedirects(true);
@@ -108,11 +113,13 @@ final class UpdateInstaller {
                     + UpdateChecker.installedVersionCode(activity));
             int status = connection.getResponseCode();
             if (status < 200 || status >= 300) {
-                throw new IllegalStateException("Serwer zwrócił HTTP " + status);
+                throw new IllegalStateException(LocalizedText.format(activity,
+                        "Serwer zwrócił HTTP %1$d.", status));
             }
             long expectedLength = connection.getContentLengthLong();
             if (expectedLength > MAX_APK_BYTES) {
-                throw new IllegalStateException("Plik aktualizacji jest za duży");
+                throw new IllegalStateException(LocalizedText.text(activity,
+                        "Plik aktualizacji jest za duży."));
             }
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             long downloaded = 0;
@@ -122,10 +129,11 @@ final class UpdateInstaller {
                     FileOutputStream output = new FileOutputStream(part)) {
                 int count;
                 while ((count = input.read(buffer)) != -1) {
-                    if (canceled.get()) throw new InterruptedException("Pobieranie anulowane");
+                    if (canceled.get()) throw new InterruptedException("download canceled");
                     downloaded += count;
                     if (downloaded > MAX_APK_BYTES) {
-                        throw new IllegalStateException("Plik aktualizacji jest za duży");
+                        throw new IllegalStateException(LocalizedText.text(activity,
+                                "Plik aktualizacji jest za duży."));
                     }
                     output.write(buffer, 0, count);
                     digest.update(buffer, 0, count);
@@ -137,7 +145,8 @@ final class UpdateInstaller {
                             main.post(() -> {
                                 progress.setIndeterminate(false);
                                 progress.setProgress(shown);
-                                state.setText("Pobieranie: " + shown + "%");
+                                state.setText(LocalizedText.format(activity,
+                                        "Pobieranie: %1$d%%", shown));
                             });
                         }
                     }
@@ -145,14 +154,17 @@ final class UpdateInstaller {
             }
             String actualHash = hex(digest.digest());
             if (!actualHash.equalsIgnoreCase(info.sha256)) {
-                throw new SecurityException("Suma SHA-256 pobranego APK jest nieprawidłowa");
+                throw new SecurityException(LocalizedText.text(activity,
+                        "Suma SHA-256 pobranego APK jest nieprawidłowa."));
             }
             verifyApk(activity, part, info);
             if (target.exists() && !target.delete()) {
-                throw new IllegalStateException("Nie można zastąpić starej aktualizacji");
+                throw new IllegalStateException(LocalizedText.text(activity,
+                        "Nie można zastąpić starej aktualizacji."));
             }
             if (!part.renameTo(target)) {
-                throw new IllegalStateException("Nie można przygotować pobranego APK");
+                throw new IllegalStateException(LocalizedText.text(activity,
+                        "Nie można przygotować pobranego APK."));
             }
             main.post(() -> {
                 if (!activity.isFinishing() && !activity.isDestroyed()) {
@@ -169,9 +181,11 @@ final class UpdateInstaller {
                 dialog.dismiss();
                 if (!activity.isFinishing() && !activity.isDestroyed()) {
                     new AlertDialog.Builder(activity)
-                            .setTitle("Nie udało się pobrać aktualizacji")
+                            .setTitle(LocalizedText.text(activity,
+                                    "Nie udało się pobrać aktualizacji"))
                             .setMessage(error.getMessage() == null
-                                    ? "Spróbuj ponownie później." : error.getMessage())
+                                    ? LocalizedText.text(activity,
+                                    "Spróbuj ponownie później.") : error.getMessage())
                             .setPositiveButton("OK", null)
                             .show();
                 }
@@ -196,7 +210,8 @@ final class UpdateInstaller {
         if (archive == null || !activity.getPackageName().equals(archive.packageName)
                 || archive.getLongVersionCode() != info.versionCode
                 || !sameSigners(installed, archive)) {
-            throw new SecurityException("APK nie jest prawidłową aktualizacją Pixel Center");
+            throw new SecurityException(LocalizedText.text(activity,
+                    "APK nie jest prawidłową aktualizacją Pixel Center."));
         }
     }
 
@@ -237,7 +252,8 @@ final class UpdateInstaller {
 
     private static void launchInstaller(Activity activity, File apk) {
         if (!apk.isFile()) {
-            Toast.makeText(activity, "Pobrany plik aktualizacji już nie istnieje.",
+            Toast.makeText(activity, LocalizedText.text(activity,
+                            "Pobrany plik aktualizacji już nie istnieje."),
                     Toast.LENGTH_LONG).show();
             return;
         }

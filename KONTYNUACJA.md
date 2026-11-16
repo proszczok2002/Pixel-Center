@@ -2,15 +2,14 @@
 
 Aktualny kod, dokumentacja i historia zmian znajdują się w tym repozytorium. Publiczne wydania są publikowane w `https://github.com/proszczok2002/Pixel-Center/releases`, a aktywny manifest updatera jest w `server/pixel-center-update.json` na gałęzi `main`.
 
-## Bieżące wydanie 1.02
+## Bieżące wydanie 1.03
 
-- Kod ma `versionName=1.02` i `versionCode=30`.
-- Lokalny instalator: `Pixel Center 1.02.apk`, SHA-256 `A3C34A8F372C45B161961B0135B44BFBC6AEE9A260BD6AE647F7D6994EFB6F22`.
-- Zintegrowano działanie Pixelate 1.4.3 bez zmiany grafiki nakładki Pixel Center.
-- Pełna kompilacja, 4 testy jednostkowe, APK AndroidTest i Lint przeszły 2026-11-13.
-- Wydanie publiczne: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.02`; aktywny manifest wskazuje 1.02/code 30.
-- Publiczny APK został niezależnie pobrany i sprawdzony pod kątem rozmiaru, SHA-256, pakietu, wersji i certyfikatu.
-- Telefon nie był podłączony, więc fizyczny test pojawienia się przycisku, czyszczenia długiej listy oraz braku nakładki na ekranie głównym nadal pozostaje do wykonania.
+- Kod: `versionName=1.03`, `versionCode=31`.
+- Lokalny instalator: `Pixel Center 1.03.apk`, SHA-256 `5BDAEDC4CD0228221D6AC770C879DC689176F57B7E3DEE25FFC133CF8FA19C17`, 3 016 562 bajty, dotychczasowy podpis.
+- Dolne zakładki, duża czcionka, poziom, PL/EN/DE/RU/ES/FR/IT; logika Pixelate 1.4.3 pozostaje zintegrowana.
+- Build, 5 testów jednostkowych, APK AndroidTest i Lint (0 błędów, 18 ostrzeżeń) przeszły 2026-11-16.
+- Testy na Pixelu 11 z TalkBackiem oraz zakres nieprzetestowany opisuje `docs/ACCESSIBILITY-1.03.md`. Końcowy APK na telefonie ma identyczny hash z wydaniem. Należy jeszcze wykonać odsłuch i ręczny odbiór gestów.
+- Docelowe wydanie: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; stan publikacji i weryfikacji jest w najnowszym wpisie `STAN_PRAC.md`.
 
 ## Środowisko
 

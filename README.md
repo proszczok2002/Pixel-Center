@@ -16,6 +16,8 @@ Pixel Center wymaga Androida 9 lub nowszego (`minSdk 28`) i jest rozwijany dla t
 
 ## Aktualizacje
 
+Wersja 1.03 dodaje dolną nawigację, układ dwurzędowy przy dużej czcionce oraz interfejs po polsku, angielsku, niemiecku, rosyjsku, hiszpańsku, francusku i włosku. Język zmienisz przez **Więcej → Zmień język aplikacji** (Android 13+); na starszym Androidzie aplikacja używa języka systemu. [Instrukcja języków](docs/LANGUAGES.md) i [raport dostępności](docs/ACCESSIBILITY-1.03.md) opisują szczegóły i zakres testów na Pixelu 11.
+
 Najnowsze wydanie jest dostępne w sekcji [Releases](https://github.com/proszczok2002/Pixel-Center/releases/latest). Format manifestu i procedurę publikacji opisuje [docs/UPDATES.md](docs/UPDATES.md).
 
 ## Kompilacja
@@ -60,6 +62,8 @@ Pixel Center is a free collection of extra features for Google Pixel phones. It 
 Pixel Center requires Android 9 or newer (`minSdk 28`) and is developed for Google Pixel phones. Some features use an accessibility service, notification access, or other Android permissions. The app contains no ads, analytics, or telemetry and does not transmit screen contents or button presses. See the bilingual [privacy policy](PRIVACY.md) for details.
 
 ### Updates and building
+
+Version 1.03 adds bottom navigation, a two-row layout for large text, and Polish, English, German, Russian, Spanish, French, and Italian interfaces. Select **More → Change app language** on Android 13+; older Android versions follow the system language. See [language instructions](docs/LANGUAGES.md) and the [accessibility report](docs/ACCESSIBILITY-1.03.md) for Pixel 11 test coverage and limitations.
 
 Download the latest version from [GitHub Releases](https://github.com/proszczok2002/Pixel-Center/releases/latest). The update format and release procedure are documented in [docs/UPDATES.md](docs/UPDATES.md).
 

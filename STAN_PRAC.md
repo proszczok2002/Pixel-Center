@@ -1,5 +1,18 @@
 # Stan prac — Pixel Center
 
+## Wydanie 1.03 — dostępność i siedem języków, 2026-11-16
+
+- `versionName=1.03`, `versionCode=31`, pakiet `pl.proszczok.pixelspeecheq`.
+- APK: `Pixel Center 1.03.apk`, 3 016 562 bajty; SHA-256 `5BDAEDC4CD0228221D6AC770C879DC689176F57B7E3DEE25FFC133CF8FA19C17`. Certyfikat jak w 1.02: `C033826456D8A38F662306C5D3253EF0A7B8B4D19582DD50408D0861CD4CC41E`.
+- Dolna nawigacja z ikonami, rolami zakładek i zaznaczeniem; dwa rzędy przy czcionce >130%; poprawione boczne marginesy w poziomie, minimum 48 dp dla przycisków.
+- PL/EN/DE/RU/ES/FR/IT: interfejs, usługi, powiadomienia, nakładka, komunikaty aktualizacji i nocnej głośności. Wybór języka przez system Androida 13+. `changelogI18n` zachowuje zgodność starszych updaterów.
+- Pixel 11, Android 17/API 37, TalkBack aktywny. 35 kombinacji język/karta, 20 prób przy czcionce 150%, końcowy test 10 kart PL/EN, poziom, przełączniki, profile i dialog aktualizacji. Zainstalowany końcowy APK pobrano z telefonu i potwierdzono identyczny SHA-256.
+- Ostatnie: przycisk ma pełną etykietę i otrzymuje fokus. Test czyszczenia: `ACTION_SHOW_ON_SCREEN`, natywny `clear_all` po 0 krokach, ok. 352 ms. Po ponownym otwarciu aplikacji pozostały tylko Pixel Center i ekran główny.
+- Przywrócono EQ włączony/profil lekki, noc wyłączona, media włączone, fokus automatyczny wyłączony, 20 sekund, język systemowy PL, font 1.0, pion/obrót automatyczny wyłączony. TalkBack, AutoGłośnik i Pixel Center aktywne; `Crashed services:{}`.
+- Build: `testDebugUnitTest assembleDebug assembleDebugAndroidTest lintDebug`; 5/5 testów jednostkowych, Lint 0 błędów i 18 ostrzeżeń. Nie uruchamiano całej instrumentacji fizycznych klawiszy.
+- Raport zakresu: `docs/ACCESSIBILITY-1.03.md`; brak odsłuchu mowy i ręcznych gestów osoby niewidomej. Nie deklarujemy pełnego odbioru fizycznych gestów, głosów, każdej aplikacji multimedialnej i słuchawek Bluetooth.
+- Publikacja 1.03: `https://github.com/proszczok2002/Pixel-Center/releases/tag/v1.03`; plik `Pixel-Center-1.03-20261116.apk`. Status publicznego sprawdzenia i manifestu zostanie dopisany po pobraniu publicznego APK. Jedynym kanałem pozostaje GitHub.
+
 ## Aktualny stan — integracja Pixelate 1.4.3, 2026-11-13
 
 - Zweryfikowano publiczne wydanie [Pixelate 1.4.3](https://github.com/Pates2004/Pixelate/releases/tag/v1.4.3) autora [@Pates2004](https://github.com/Pates2004), tag `v1.4.3`, commit `76344f11a72fa060c0b37dedb7bc229985d2164a`.

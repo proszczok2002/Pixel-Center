@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <application android:label="Pixel Center audit driver" android:allowBackup="false">
+        <activity android:name=".InstallActivity" android:exported="true" />
+        <provider android:name=".CandidateProvider" android:authorities="pl.proszczok.ytdownloader.auditdriver.candidate" android:exported="false" android:grantUriPermissions="true" />
+    </application>
+    <instrumentation android:name=".AuditInstrumentation"
+        android:targetPackage="pl.proszczok.ytdownloader.auditdriver"
+        android:label="TalkBack-preserving UI audit" />
+</manifest>

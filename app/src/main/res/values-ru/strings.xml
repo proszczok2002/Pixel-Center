@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel Center</string>
+    <string name="recents_service_label">Pixel Center — управление телефоном</string>
+    <string name="recents_service_description">Показывает кнопку «Закрыть все приложения» на системном экране недавних приложений. Если включено управление мультимедиа, служба реагирует на длительное нажатие кнопок громкости только при выключенном экране. Она не сохраняет и не передаёт содержимое экрана или нажатия кнопок.</string>
+    <string name="player_monitor_service_label">Pixel Center — обнаружение проигрывателя</string>
+    <string name="unsupported_service_disabled">Служба Pixel Center отключена, потому что это устройство не является поддерживаемым Google Pixel.</string>
+    <string name="overlay_clear_all">Закрыть все приложения</string>
+    <string name="overlay_clearing">Закрытие приложений…</string>
+    <string name="overlay_window_title">Pixel Center — Недавние приложения</string>
+    <string name="clear_success">Недавние приложения закрыты</string>
+    <string name="clear_failure">Время поиска системной кнопки истекло. Можно повторить попытку.</string>
+    <string name="clear_no_tasks">Приложения для закрытия не найдены</string>
+</resources>

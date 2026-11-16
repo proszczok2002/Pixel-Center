@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.media.audiofx.AudioEffect;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
@@ -32,7 +31,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -41,6 +39,9 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.accessibility.AccessibilityNodeInfo;
+
+import java.util.Locale;
 
 import java.lang.ref.WeakReference;
 
@@ -60,7 +61,6 @@ public final class MainActivity extends Activity {
     private static final long TIMEOUT_AUTO_SAVE_DELAY_MS = 900;
     private static WeakReference<MainActivity> resumedActivity = new WeakReference<>(null);
 
-    private TextView status;
     private final int[] presetIds = new int[3];
     private TextView enabledState;
     private TextView accessState;
@@ -165,7 +165,8 @@ public final class MainActivity extends Activity {
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(COLOR_BACKGROUND);
         root.setOnApplyWindowInsetsListener((view, insets) -> {
-            view.setPadding(0, insets.getSystemWindowInsetTop(), 0,
+            view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
+                    insets.getSystemWindowInsetRight(),
                     insets.getSystemWindowInsetBottom());
             return insets;
         });
@@ -176,7 +177,6 @@ public final class MainActivity extends Activity {
         addHeader(content);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             root.addView(content, matchWrap());
-            root.addView(buildTabBar(), matchWrap());
             FrameLayout host = new FrameLayout(this);
             tabPages[TAB_AUDIO] = buildAudioPage();
             tabPages[TAB_VOLUME] = buildVolumePage();
@@ -190,6 +190,7 @@ public final class MainActivity extends Activity {
             }
             root.addView(host, new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+            root.addView(buildBottomNavigation(), matchWrap());
             root.requestApplyInsets();
             return root;
         }
@@ -223,43 +224,60 @@ public final class MainActivity extends Activity {
         return scrollView;
     }
 
-    private View buildTabBar() {
-        HorizontalScrollView scroller = new HorizontalScrollView(this);
-        scroller.setFillViewport(false);
-        scroller.setHorizontalScrollBarEnabled(false);
-        scroller.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        scroller.setBackgroundColor(COLOR_BACKGROUND);
-
-        LinearLayout tabs = new LinearLayout(this);
-        tabs.setOrientation(LinearLayout.HORIZONTAL);
-        tabs.setPadding(dp(12), dp(4), dp(12), dp(6));
-        String[] labels = {
-                "Korektor audiobooków",
-                "Cichy tryb nocny",
-                "Sterowanie przyciskami",
-                "Zamknij wszystkie aplikacje",
-                "Informacje i aktualizacje"
+    private View buildBottomNavigation() {
+        LinearLayout navigation = new LinearLayout(this);
+        navigation.setOrientation(LinearLayout.VERTICAL);
+        navigation.setBackgroundColor(COLOR_CARD);
+        navigation.setPadding(dp(6), dp(5), dp(6), dp(5));
+        navigation.setAccessibilityPaneTitle(tr("Główna nawigacja"));
+        boolean largeText = getResources().getConfiguration().fontScale > 1.3f;
+        String[] labels = {"Korektor", "Noc", "Przyciski", "Ostatnie", "Więcej"};
+        int[] icons = {
+                R.drawable.ic_nav_equalizer,
+                R.drawable.ic_nav_night_volume,
+                R.drawable.ic_nav_media,
+                R.drawable.ic_nav_recents,
+                R.drawable.ic_nav_info
         };
+        int rowSize = largeText ? 3 : labels.length;
+        LinearLayout row = null;
         for (int i = 0; i < labels.length; i++) {
+            if (i % rowSize == 0) {
+                row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setGravity(Gravity.CENTER);
+                navigation.addView(row, new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
             final int tab = i;
             Button item = button(labels[i]);
             item.setMaxLines(2);
-            item.setTextSize(14);
-            item.setMinHeight(dp(56));
-            item.setMaxWidth(dp(240));
-            item.setPadding(dp(16), dp(8), dp(16), dp(8));
+            item.setTextSize(largeText ? 14 : 11);
+            item.setMinHeight(dp(largeText ? 62 : 66));
+            item.setPadding(dp(4), dp(6), dp(4), dp(4));
+            item.setGravity(Gravity.CENTER);
+            item.setCompoundDrawablesRelativeWithIntrinsicBounds(0, icons[i], 0, 0);
+            item.setCompoundDrawablePadding(dp(3));
+            item.setCompoundDrawableTintList(ColorStateList.valueOf(COLOR_TEXT));
+            item.setAccessibilityDelegate(new View.AccessibilityDelegate() {
+                @Override
+                public void onInitializeAccessibilityNodeInfo(
+                        View host, AccessibilityNodeInfo info) {
+                    super.onInitializeAccessibilityNodeInfo(host, info);
+                    info.setClassName("android.app.ActionBar$Tab");
+                    info.setSelected(host.isSelected());
+                }
+            });
             item.setOnClickListener(v -> selectTab(tab));
             tabButtons[i] = item;
             LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            itemParams.rightMargin = dp(8);
-            tabs.addView(item, itemParams);
+                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            itemParams.leftMargin = dp(2);
+            itemParams.rightMargin = dp(2);
+            row.addView(item, itemParams);
         }
-        scroller.addView(tabs, new HorizontalScrollView.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        return scroller;
+        return navigation;
     }
 
     private View buildAudioPage() {
@@ -315,10 +333,27 @@ public final class MainActivity extends Activity {
                 "Korektor działa tylko podczas audiobooka w obsługiwanej aplikacji. Cichy poziom nocny działa wyłącznie na słuchawkach Bluetooth, na ekranie odblokowanym i zablokowanym. Głośnik telefonu zachowuje fabryczne kroki Androida. Sterowanie muzyką reaguje tylko przy zablokowanym ekranie. Pixel Center nie zapisuje ani nie wysyła treści ekranu ani naciśnięć przycisków.",
                 14, COLOR_SECONDARY);
         detailsCard.addView(details, matchWrap());
-        TextView device = text("Urządzenie: Google " + Build.MODEL, 14, COLOR_ACCENT);
+        TextView device = text(tf("Urządzenie: Google %1$s", Build.MODEL),
+                14, COLOR_ACCENT);
         device.setPadding(0, dp(14), 0, 0);
         detailsCard.addView(device, matchWrap());
         content.addView(detailsCard, cardParams());
+
+        addSectionTitle(content, "JĘZYK");
+        LinearLayout languageCard = card();
+        TextView languageState = stateText();
+        languageState.setText(tf("JĘZYK APLIKACJI: %1$s",
+                LocalizedText.languageName(this)));
+        languageCard.addView(languageState, matchWrap());
+        TextView languageDescription = text(
+                "Pixel Center używa języka wybranego dla aplikacji w ustawieniach Androida. Dostępne są: polski, angielski, niemiecki, rosyjski, hiszpański, francuski i włoski.",
+                14, COLOR_SECONDARY);
+        languageDescription.setPadding(0, dp(8), 0, dp(12));
+        languageCard.addView(languageDescription, matchWrap());
+        Button languageButton = button("Zmień język aplikacji");
+        languageButton.setOnClickListener(v -> openLanguageSettings());
+        languageCard.addView(languageButton, matchWrap());
+        content.addView(languageCard, cardParams());
 
         addSectionTitle(content, "AKTUALIZACJE");
         LinearLayout updateCard = card();
@@ -356,16 +391,28 @@ public final class MainActivity extends Activity {
     private void openExternalLink(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         if (intent.resolveActivity(getPackageManager()) == null) {
-            Toast.makeText(this, "Brak aplikacji do otwarcia linku.",
+            Toast.makeText(this, tr("Brak aplikacji do otwarcia linku."),
                     Toast.LENGTH_LONG).show();
             return;
         }
         startActivity(intent);
     }
 
+    private void openLanguageSettings() {
+        Intent intent;
+        if (Build.VERSION.SDK_INT >= 33) {
+            intent = new Intent(Settings.ACTION_APP_LOCALE_SETTINGS,
+                    Uri.parse("package:" + getPackageName()));
+        } else {
+            intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+        }
+        startActivity(intent);
+    }
+
     private void checkForUpdates(boolean manual) {
         if (manual) {
-            Toast.makeText(this, "Sprawdzam aktualizacje...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tr("Sprawdzam aktualizacje..."),
+                    Toast.LENGTH_SHORT).show();
         }
         UpdateChecker.check(this, new UpdateChecker.Callback() {
             @Override
@@ -382,7 +429,7 @@ public final class MainActivity extends Activity {
             public void onError(Exception error) {
                 if (manual && !isFinishing() && !isDestroyed()) {
                     Toast.makeText(MainActivity.this,
-                            "Nie uda\u0142o si\u0119 sprawdzi\u0107 aktualizacji. Sprawd\u017a internet i spr\u00f3buj ponownie.",
+                            tr("Nie udało się sprawdzić aktualizacji. Sprawdź internet i spróbuj ponownie."),
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -392,14 +439,14 @@ public final class MainActivity extends Activity {
     private void showUpdateDialog(UpdateChecker.UpdateInfo info) {
         if (updateDialogVisible) return;
         updateDialogVisible = true;
-        String message = "Dost\u0119pna wersja: " + info.versionName
-                + "\nZainstalowana wersja: " + appVersion()
-                + (TextUtils.isEmpty(info.changelog) ? "" : "\n\n" + info.changelog);
+        String notes = TextUtils.isEmpty(info.changelog) ? "" : "\n\n" + info.changelog;
+        String message = tf("Dostępna wersja: %1$s\nZainstalowana wersja: %2$s%3$s",
+                info.versionName, appVersion(), notes);
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Nowa wersja Pixel Center")
+                .setTitle(tr("Nowa wersja Pixel Center"))
                 .setMessage(message)
-                .setNegativeButton("P\u00f3\u017aniej", null)
-                .setPositiveButton("Pobierz i zainstaluj", (ignored, which) ->
+                .setNegativeButton(tr("Później"), null)
+                .setPositiveButton(tr("Pobierz i zainstaluj"), (ignored, which) ->
                         UpdateInstaller.downloadAndInstall(MainActivity.this, info))
                 .create();
         dialog.setOnDismissListener(ignored -> updateDialogVisible = false);
@@ -408,9 +455,9 @@ public final class MainActivity extends Activity {
 
     private void showCurrentVersionDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Aktualizacje Pixel Center")
-                .setMessage("Masz najnowsz\u0105 wersj\u0119.\n\nZainstalowana wersja: "
-                        + appVersion())
+                .setTitle(tr("Aktualizacje Pixel Center"))
+                .setMessage(tf("Masz najnowszą wersję.\n\nZainstalowana wersja: %1$s",
+                        appVersion()))
                 .setPositiveButton("OK", null)
                 .show();
     }
@@ -434,7 +481,7 @@ public final class MainActivity extends Activity {
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
         scroll.setBackgroundColor(COLOR_BACKGROUND);
-        scroll.setAccessibilityPaneTitle(paneTitle);
+        scroll.setAccessibilityPaneTitle(tr(paneTitle));
         scroll.addView(content);
         return scroll;
     }
@@ -445,8 +492,13 @@ public final class MainActivity extends Activity {
             boolean selected = i == selectedTab;
             tabPages[i].setVisibility(selected ? View.VISIBLE : View.GONE);
             tabButtons[i].setSelected(selected);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                tabButtons[i].setStateDescription(selected ? tr("Wybrano") : null);
+            }
             tabButtons[i].setTextColor(selected
                     ? Color.rgb(8, 48, 95) : COLOR_TEXT);
+            tabButtons[i].setCompoundDrawableTintList(ColorStateList.valueOf(
+                    selected ? Color.rgb(8, 48, 95) : COLOR_TEXT));
             tabButtons[i].setBackground(tabBackground(selected));
         }
         tabPages[selectedTab].sendAccessibilityEvent(
@@ -479,7 +531,7 @@ public final class MainActivity extends Activity {
         mainCard.addView(enabledState, matchWrap());
 
         masterSwitch = new Switch(this);
-        masterSwitch.setText("Automatyczny korektor");
+        masterSwitch.setText(tr("Automatyczny korektor"));
         masterSwitch.setTextSize(18);
         masterSwitch.setTextColor(COLOR_TEXT);
         masterSwitch.setPadding(0, dp(8), 0, dp(4));
@@ -493,7 +545,8 @@ public final class MainActivity extends Activity {
                             : ScopedEqService.ACTION_DISABLE);
             startService(intent);
             if (checked && !hasNotificationAccess()) {
-                currentStatus.setText("Włącz dostęp systemowy poniżej, aby aplikacja mogła wykrywać odtwarzanie.");
+                currentStatus.setText(tr(
+                        "Włącz dostęp systemowy poniżej, aby aplikacja mogła wykrywać odtwarzanie."));
                 currentStatus.setTextColor(COLOR_WARNING);
             }
             currentStatus.postDelayed(this::refreshImprovedUi, 350);
@@ -521,7 +574,8 @@ public final class MainActivity extends Activity {
         accessCard.addView(help, matchWrap());
 
         Button accessButton = button("Otwórz ustawienia dostępu");
-        accessButton.setContentDescription("Otwórz systemowe ustawienia dostępu do powiadomień");
+        accessButton.setContentDescription(tr(
+                "Otwórz systemowe ustawienia dostępu do powiadomień"));
         accessButton.setOnClickListener(v ->
                 startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)));
         accessCard.addView(accessButton, matchWrap());
@@ -547,7 +601,7 @@ public final class MainActivity extends Activity {
             RadioButton radio = new RadioButton(this);
             presetIds[i] = View.generateViewId();
             radio.setId(presetIds[i]);
-            radio.setText(names[i] + "\n" + details[i]);
+            radio.setText(tr(names[i]) + "\n" + tr(details[i]));
             radio.setTextSize(16);
             radio.setTextColor(new ColorStateList(
                     new int[][] {new int[] {android.R.attr.state_checked}, new int[] {}},
@@ -566,7 +620,8 @@ public final class MainActivity extends Activity {
                     .setAction(ScopedEqService.ACTION_SET_PRESET)
                     .putExtra(ScopedEqService.EXTRA_PRESET, preset);
             startService(intent);
-            selectedPreset.setText("WYBRANY PROFIL: " + presetName(preset).toUpperCase());
+            selectedPreset.setText(tf("WYBRANY PROFIL: %1$s",
+                    presetName(preset).toUpperCase(Locale.getDefault())));
             currentStatus.postDelayed(this::refreshImprovedUi, 250);
         });
         presetCard.addView(presetGroup, matchWrap());
@@ -592,7 +647,7 @@ public final class MainActivity extends Activity {
         controlsCard.addView(mediaControlsState, matchWrap());
 
         mediaControlsSwitch = new Switch(this);
-        mediaControlsSwitch.setText("Sterowanie muzyką przyciskami głośności");
+        mediaControlsSwitch.setText(tr("Sterowanie muzyką przyciskami głośności"));
         mediaControlsSwitch.setTextSize(17);
         mediaControlsSwitch.setTextColor(COLOR_TEXT);
         mediaControlsSwitch.setMinHeight(dp(56));
@@ -603,7 +658,7 @@ public final class MainActivity extends Activity {
             refreshMediaControlsState();
             if (checked && !PixelateAccessibilityService.isConnected()) {
                 Toast.makeText(this,
-                        "Włącz usługę Pixel Center w ustawieniach dostępności.",
+                        tr("Włącz usługę Pixel Center w ustawieniach dostępności."),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -650,7 +705,7 @@ public final class MainActivity extends Activity {
         volumeCard.addView(volumeStepState, matchWrap());
 
         advancedVolumeSwitch = new Switch(this);
-        advancedVolumeSwitch.setText("Dodatkowy cichy poziom nocny");
+        advancedVolumeSwitch.setText(tr("Dodatkowy cichy poziom nocny"));
         advancedVolumeSwitch.setTextSize(17);
         advancedVolumeSwitch.setTextColor(COLOR_TEXT);
         advancedVolumeSwitch.setMinHeight(dp(56));
@@ -677,7 +732,7 @@ public final class MainActivity extends Activity {
         recentsState.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         serviceCard.addView(recentsState, matchWrap());
 
-        TextView device = text("Telefon: " + Build.MODEL, 14, COLOR_ACCENT);
+        TextView device = text(tf("Telefon: %1$s", Build.MODEL), 14, COLOR_ACCENT);
         device.setPadding(0, dp(8), 0, 0);
         serviceCard.addView(device, matchWrap());
 
@@ -689,7 +744,7 @@ public final class MainActivity extends Activity {
 
         Button accessibilityButton = button("Otwórz ustawienia dostępności");
         accessibilityButton.setContentDescription(
-                "Otwórz ustawienia dostępności i włącz usługę Pixel Center");
+                tr("Otwórz ustawienia dostępności i włącz usługę Pixel Center"));
         accessibilityButton.setOnClickListener(v ->
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)));
         serviceCard.addView(accessibilityButton, matchWrap());
@@ -705,7 +760,7 @@ public final class MainActivity extends Activity {
         LinearLayout settingsCard = card();
 
         focusButtonSwitch = new Switch(this);
-        focusButtonSwitch.setText("Ustaw fokus czytnika na przycisku");
+        focusButtonSwitch.setText(tr("Ustaw fokus czytnika na przycisku"));
         focusButtonSwitch.setTextSize(17);
         focusButtonSwitch.setTextColor(COLOR_TEXT);
         focusButtonSwitch.setMinHeight(dp(56));
@@ -738,7 +793,7 @@ public final class MainActivity extends Activity {
         timeoutInput.setTextColor(COLOR_TEXT);
         timeoutInput.setHintTextColor(COLOR_SECONDARY);
         timeoutInput.setContentDescription(
-                "Limit czasu szukania systemowego przycisku w sekundach, od 0 do 300");
+                tr("Limit czasu szukania systemowego przycisku w sekundach, od 0 do 300"));
         timeoutInput.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(
                     CharSequence value, int start, int count, int after) { }
@@ -794,11 +849,12 @@ public final class MainActivity extends Activity {
             advancedVolumeSwitch.setChecked(advanced);
         }
 
-        enabledState.setText(enabled ? "KOREKTOR WŁĄCZONY" : "KOREKTOR WYŁĄCZONY");
+        enabledState.setText(tr(enabled ? "KOREKTOR WŁĄCZONY" : "KOREKTOR WYŁĄCZONY"));
         enabledState.setTextColor(enabled ? COLOR_OK : COLOR_WARNING);
-        accessState.setText(access ? "DOSTĘP NADANY" : "BRAK DOSTĘPU");
+        accessState.setText(tr(access ? "DOSTĘP NADANY" : "BRAK DOSTĘPU"));
         accessState.setTextColor(access ? COLOR_OK : COLOR_WARNING);
-        selectedPreset.setText("WYBRANY PROFIL: " + presetName(preset).toUpperCase());
+        selectedPreset.setText(tf("WYBRANY PROFIL: %1$s",
+                presetName(preset).toUpperCase(Locale.getDefault())));
         selectedPreset.setTextColor(COLOR_ACCENT);
         refreshRecentsState();
         refreshMediaControlsState();
@@ -816,14 +872,17 @@ public final class MainActivity extends Activity {
 
         String saved = prefs.getString(ScopedEqService.PREF_STATUS,
                 "Korektor czeka na obsługiwany odtwarzacz.");
+        if (!LocalizedText.language(this).equals(prefs.getString("status_language", "pl"))) {
+            saved = "Korektor czeka na obsługiwany odtwarzacz.";
+        }
         if (!access) {
-            currentStatus.setText("Wymagany jest dostęp systemowy. Naciśnij „Otwórz ustawienia dostępu” i zezwól aplikacji Pixel Center.");
+            currentStatus.setText(tr("Wymagany jest dostęp systemowy. Naciśnij „Otwórz ustawienia dostępu” i zezwól aplikacji Pixel Center."));
             currentStatus.setTextColor(COLOR_WARNING);
         } else if (!enabled) {
-            currentStatus.setText("Korektor jest wyłączony. Włącz przełącznik „Automatyczny korektor”.");
+            currentStatus.setText(tr("Korektor jest wyłączony. Włącz przełącznik „Automatyczny korektor”."));
             currentStatus.setTextColor(COLOR_WARNING);
         } else {
-            currentStatus.setText(saved);
+            currentStatus.setText(tr(saved));
             currentStatus.setTextColor(COLOR_ACCENT);
         }
     }
@@ -832,16 +891,16 @@ public final class MainActivity extends Activity {
         if (mediaControlsState == null) return;
         boolean enabled = PixelatePreferences.areScreenOffMediaControlsEnabled(this);
         if (!enabled) {
-            mediaControlsState.setText("STEROWANIE WYŁĄCZONE");
+            mediaControlsState.setText(tr("STEROWANIE WYŁĄCZONE"));
             mediaControlsState.setTextColor(COLOR_WARNING);
         } else if (!ScreenOffMediaService.isRunning()) {
-            mediaControlsState.setText("URUCHAMIANIE USŁUGI MUZYKI");
+            mediaControlsState.setText(tr("URUCHAMIANIE USŁUGI MUZYKI"));
             mediaControlsState.setTextColor(COLOR_WARNING);
         } else if (!hasNotificationAccess()) {
-            mediaControlsState.setText("WŁĄCZONE — NADAJ DOSTĘP DO ODTWARZANIA");
+            mediaControlsState.setText(tr("WŁĄCZONE — NADAJ DOSTĘP DO ODTWARZANIA"));
             mediaControlsState.setTextColor(COLOR_WARNING);
         } else {
-            mediaControlsState.setText("STEROWANIE WŁĄCZONE");
+            mediaControlsState.setText(tr("STEROWANIE WŁĄCZONE"));
             mediaControlsState.setTextColor(COLOR_OK);
         }
     }
@@ -855,19 +914,19 @@ public final class MainActivity extends Activity {
         boolean connected = PixelateAccessibilityService.isConnected();
 
         if (centerEnabled && legacyEnabled) {
-            recentsState.setText("WYŁĄCZ STARĄ USŁUGĘ PIXELATE");
+            recentsState.setText(tr("WYŁĄCZ STARĄ USŁUGĘ PIXELATE"));
             recentsState.setTextColor(COLOR_WARNING);
         } else if (connected) {
-            recentsState.setText("USŁUGA OSTATNICH DZIAŁA");
+            recentsState.setText(tr("USŁUGA OSTATNICH DZIAŁA"));
             recentsState.setTextColor(COLOR_OK);
         } else if (centerEnabled) {
-            recentsState.setText("USŁUGA WŁĄCZONA — OCZEKUJE NA POŁĄCZENIE");
+            recentsState.setText(tr("USŁUGA WŁĄCZONA — OCZEKUJE NA POŁĄCZENIE"));
             recentsState.setTextColor(COLOR_WARNING);
         } else if (legacyEnabled) {
-            recentsState.setText("STARA PIXELATE DZIAŁA — PRZEŁĄCZ USŁUGĘ");
+            recentsState.setText(tr("STARA PIXELATE DZIAŁA — PRZEŁĄCZ USŁUGĘ"));
             recentsState.setTextColor(COLOR_WARNING);
         } else {
-            recentsState.setText("USŁUGA OSTATNICH WYŁĄCZONA");
+            recentsState.setText(tr("USŁUGA OSTATNICH WYŁĄCZONA"));
             recentsState.setTextColor(COLOR_WARNING);
         }
     }
@@ -892,21 +951,21 @@ public final class MainActivity extends Activity {
                 new ComponentName(this, PixelateAccessibilityService.class));
         if (legacyEnabled && centerEnabled) {
             Toast.makeText(this,
-                    "Najpierw wyłącz starą usługę Pixelate, aby nie pojawiły się dwa przyciski.",
+                    tr("Najpierw wyłącz starą usługę Pixelate, aby nie pojawiły się dwa przyciski."),
                     Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             return;
         }
         if (!PixelateAccessibilityService.isConnected()) {
             Toast.makeText(this,
-                    "Najpierw włącz usługę Pixel Center w ustawieniach dostępności.",
+                    tr("Najpierw włącz usługę Pixel Center w ustawieniach dostępności."),
                     Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             return;
         }
         if (!PixelateAccessibilityService.openRecentsForTest()) {
             Toast.makeText(this,
-                    "Nie udało się otworzyć Ostatnich. Spróbuj ponownie.",
+                    tr("Nie udało się otworzyć Ostatnich. Spróbuj ponownie."),
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -917,7 +976,7 @@ public final class MainActivity extends Activity {
         String raw = timeoutInput.getText().toString().trim();
         if (raw.isEmpty()) {
             if (showEmptyError) {
-                timeoutInput.setError("Wpisz pelna liczbe sekund.");
+                timeoutInput.setError(tr("Wpisz pełną liczbę sekund."));
             }
             return;
         }
@@ -925,11 +984,11 @@ public final class MainActivity extends Activity {
         try {
             timeout = Integer.parseInt(raw);
         } catch (NumberFormatException error) {
-            timeoutInput.setError("Wpisz pełną liczbę sekund.");
+            timeoutInput.setError(tr("Wpisz pełną liczbę sekund."));
             return;
         }
         if (timeout < 0 || timeout > PixelatePreferences.MAX_SEARCH_TIMEOUT_SECONDS) {
-            timeoutInput.setError("Dozwolony zakres to od 0 do 300.");
+            timeoutInput.setError(tr("Dozwolony zakres to od 0 do 300."));
             return;
         }
         PixelatePreferences.setSearchTimeoutSeconds(this, timeout);
@@ -950,10 +1009,10 @@ public final class MainActivity extends Activity {
             int currentFine = PixelatePreferences.getFineVolumePercent(this);
             boolean nightActive = currentFine > 0 && currentFine < firstPercent;
             volumeStepState.setText(nightActive
-                    ? "CICHY POZIOM NOCNY AKTYWNY"
-                    : "CICHY TRYB NOCNY WŁĄCZONY");
+                    ? tr("CICHY POZIOM NOCNY AKTYWNY")
+                    : tr("CICHY TRYB NOCNY WŁĄCZONY"));
         } else {
-            volumeStepState.setText("CICHY TRYB NOCNY WYŁĄCZONY");
+            volumeStepState.setText(tr("CICHY TRYB NOCNY WYŁĄCZONY"));
         }
         volumeStepState.setTextColor(enabled ? COLOR_OK : COLOR_SECONDARY);
     }
@@ -966,9 +1025,9 @@ public final class MainActivity extends Activity {
     }
 
     private String presetName(int preset) {
-        if (preset == 0) return "Lekki";
-        if (preset == 2) return "Mocny";
-        return "Średni";
+        if (preset == 0) return tr("Lekki");
+        if (preset == 2) return tr("Mocny");
+        return tr("Średni");
     }
 
     private void addSectionTitle(LinearLayout parent, String title) {
@@ -1016,7 +1075,7 @@ public final class MainActivity extends Activity {
 
     private TextView text(String value, int size, int color) {
         TextView view = new TextView(this);
-        view.setText(value);
+        view.setText(tr(value));
         view.setTextSize(size);
         view.setTextColor(color);
         view.setLineSpacing(0, 1.12f);
@@ -1029,126 +1088,26 @@ public final class MainActivity extends Activity {
         return params;
     }
 
-    private View buildUi() {
-        int pad = dp(20);
-        LinearLayout content = new LinearLayout(this);
-        content.setOrientation(LinearLayout.VERTICAL);
-        content.setPadding(pad, pad, pad, pad);
-        content.setBackgroundColor(Color.rgb(12, 12, 14));
-
-        TextView title = new TextView(this);
-        title.setText("Pixel Center");
-        title.setTextSize(28);
-        title.setTextColor(Color.rgb(245, 245, 247));
-        content.addView(title, matchWrap());
-
-        TextView description = new TextView(this);
-        description.setText("\u0141agodny korektor tylko dla Audioteki, Smart AudioBook Player i Listen. W\u0142\u0105cza si\u0119 automatycznie, gdy jedna z nich rzeczywi\u015bcie odtwarza ksi\u0105\u017ck\u0119.");
-        description.setTextSize(16);
-        description.setTextColor(Color.rgb(202, 202, 208));
-        description.setPadding(0, dp(12), 0, dp(18));
-        content.addView(description, matchWrap());
-
-        Button enable = button("W\u0142\u0105cz automatyczne EQ");
-        enable.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ScopedEqService.class).setAction(ScopedEqService.ACTION_ENABLE_GLOBAL);
-            startService(intent);
-            if (!hasNotificationAccess()) {
-                startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
-            }
-            status.postDelayed(this::refreshStatus, 500);
-        });
-        content.addView(enable, matchWrap());
-
-        Button disable = button("Wy\u0142\u0105cz EQ");
-        disable.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ScopedEqService.class).setAction(ScopedEqService.ACTION_DISABLE);
-            startService(intent);
-            status.postDelayed(this::refreshStatus, 300);
-        });
-        content.addView(disable, matchWrap());
-
-        TextView presetLabel = new TextView(this);
-        presetLabel.setText("Si\u0142a profilu");
-        presetLabel.setTextSize(18);
-        presetLabel.setTextColor(Color.rgb(235, 235, 240));
-        presetLabel.setPadding(0, dp(22), 0, dp(8));
-        content.addView(presetLabel, matchWrap());
-
-        LinearLayout presets = new LinearLayout(this);
-        presets.setOrientation(LinearLayout.HORIZONTAL);
-        presets.setGravity(Gravity.CENTER);
-        String[] names = { "Lekki", "\u015aredni", "Mocny" };
-        for (int i = 0; i < names.length; i++) {
-            final int selected = i;
-            Button button = button(names[i]);
-            button.setOnClickListener(v -> {
-                Intent intent = new Intent(this, ScopedEqService.class)
-                        .setAction(ScopedEqService.ACTION_SET_PRESET)
-                        .putExtra(ScopedEqService.EXTRA_PRESET, selected);
-                startService(intent);
-                status.postDelayed(this::refreshStatus, 250);
-            });
-            presets.addView(button, new LinearLayout.LayoutParams(0, dp(52), 1));
-        }
-        content.addView(presets, matchWrap());
-
-        status = new TextView(this);
-        status.setTextSize(14);
-        status.setTextColor(Color.rgb(190, 220, 255));
-        status.setTextIsSelectable(true);
-        status.setPadding(0, dp(24), 0, dp(12));
-        content.addView(status, matchWrap());
-
-        TextView note = new TextView(this);
-        note.setText("Nie podbija g\u0142o\u015bno\u015bci i nie wy\u0142\u0105cza ochrony sprz\u0119towej g\u0142o\u015bnik\u00f3w.");
-        note.setTextSize(13);
-        note.setTextColor(Color.rgb(160, 160, 170));
-        content.addView(note, matchWrap());
-
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.addView(content);
-        return scrollView;
-    }
-
-    private void refreshStatus() {
-        boolean enabled = prefs.getBoolean(ScopedEqService.PREF_ENABLED, false);
-        String saved = prefs.getString(ScopedEqService.PREF_STATUS, "Korektor czeka na odtwarzacz");
-        status.setText("Stan: " + (enabled ? "W\u0141\u0104CZONY" : "WY\u0141\u0104CZONY")
-                + "\nDost\u0119p do powiadomie\u0144: " + (hasNotificationAccess() ? "TAK" : "NIE - wymagany")
-                + "\n" + saved + "\n\n" + availableEffects());
-    }
-
     private boolean hasNotificationAccess() {
         return getSystemService(android.app.NotificationManager.class)
                 .isNotificationListenerAccessGranted(
                         new android.content.ComponentName(this, PlayerMonitorService.class));
     }
 
-    private String availableEffects() {
-        StringBuilder builder = new StringBuilder("Efekty systemowe: ");
-        AudioEffect.Descriptor[] descriptors = AudioEffect.queryEffects();
-        if (descriptors == null || descriptors.length == 0) {
-            return builder.append("brak").toString();
-        }
-        boolean first = true;
-        for (AudioEffect.Descriptor descriptor : descriptors) {
-            String name = descriptor.name == null ? "" : descriptor.name;
-            if (name.toLowerCase().contains("equal") || name.toLowerCase().contains("dynamic")) {
-                if (!first) builder.append(", ");
-                builder.append(name).append(" (").append(descriptor.implementor).append(")");
-                first = false;
-            }
-        }
-        if (first) builder.append("brak korektora");
-        return builder.toString();
-    }
-
     private Button button(String text) {
         Button button = new Button(this);
-        button.setText(text);
+        button.setText(tr(text));
         button.setAllCaps(false);
+        button.setMinHeight(dp(48));
         return button;
+    }
+
+    private String tr(String value) {
+        return LocalizedText.text(this, value);
+    }
+
+    private String tf(String value, Object... arguments) {
+        return LocalizedText.format(this, value, arguments);
     }
 
     private LinearLayout.LayoutParams matchWrap() {

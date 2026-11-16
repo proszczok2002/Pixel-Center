@@ -408,7 +408,7 @@ public final class PixelateAccessibilityService extends AccessibilityService
         PixelateAccessibilityService service = current.get();
         if (service == null || !service.connected) return false;
         service.handler.post(() -> service.sendReaderAnnouncement(
-                "Cichy poziom nocny"));
+                LocalizedText.text(service, "Cichy poziom nocny")));
         return true;
     }
 

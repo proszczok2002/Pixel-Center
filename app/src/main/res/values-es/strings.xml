@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel Center</string>
+    <string name="recents_service_label">Pixel Center — control del teléfono</string>
+    <string name="recents_service_description">Muestra un botón «Cerrar todas las aplicaciones» en la pantalla del sistema de aplicaciones recientes. Si se activan los controles multimedia, el servicio responde a pulsaciones largas de los botones de volumen solo con la pantalla apagada. No guarda ni transmite el contenido de la pantalla ni las pulsaciones.</string>
+    <string name="player_monitor_service_label">Pixel Center — detección del reproductor</string>
+    <string name="unsupported_service_disabled">El servicio Pixel Center se ha desactivado porque este dispositivo no es un Google Pixel compatible.</string>
+    <string name="overlay_clear_all">Cerrar todas las aplicaciones</string>
+    <string name="overlay_clearing">Cerrando aplicaciones…</string>
+    <string name="overlay_window_title">Pixel Center — Aplicaciones recientes</string>
+    <string name="clear_success">Aplicaciones recientes cerradas</string>
+    <string name="clear_failure">Se agotó el tiempo de búsqueda del botón del sistema. Puedes intentarlo de nuevo.</string>
+    <string name="clear_no_tasks">No se encontraron aplicaciones para cerrar</string>
+</resources>

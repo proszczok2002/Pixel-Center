@@ -69,7 +69,7 @@ final class UpdateChecker {
                     throw new IllegalStateException("HTTP " + status);
                 }
                 String json = readBody(connection.getInputStream());
-                UpdateInfo info = parse(json);
+                UpdateInfo info = parse(json, LocalizedText.language(context));
                 main.post(() -> callback.onResult(info));
             } catch (Exception error) {
                 main.post(() -> callback.onError(error));
@@ -98,7 +98,7 @@ final class UpdateChecker {
         }
     }
 
-    private static UpdateInfo parse(String rawJson) throws Exception {
+    private static UpdateInfo parse(String rawJson, String language) throws Exception {
         JSONObject json = new JSONObject(rawJson);
         if (!EXPECTED_APP_ID.equals(json.getString("appId"))) {
             throw new IllegalArgumentException("Nieprawidlowy identyfikator aplikacji");
@@ -107,7 +107,10 @@ final class UpdateChecker {
         String versionName = json.getString("versionName").trim();
         String apkUrl = json.getString("apkUrl").trim();
         String changelog = json.optString("changelog", "").trim();
-        String sha256 = json.getString("sha256").trim().toUpperCase();
+        JSONObject localizedChanges = json.optJSONObject("changelogI18n");
+        if (localizedChanges != null) changelog = localizedChanges.optString(language,
+                localizedChanges.optString("en", changelog)).trim();
+        String sha256 = json.getString("sha256").trim().toUpperCase(java.util.Locale.ROOT);
         Uri uri = Uri.parse(apkUrl);
         String path = uri.getPath();
         if (versionCode <= 0 || versionName.isEmpty()

@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Pixel Center"
 include(":app")
+if (providers.gradleProperty("includeAuditDriver").orNull == "true") include(":audit-driver")

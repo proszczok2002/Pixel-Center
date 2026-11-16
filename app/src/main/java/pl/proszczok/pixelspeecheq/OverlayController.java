@@ -103,6 +103,12 @@ final class OverlayController {
         if (button != null && params != null) {
             String title = service.getString(R.string.overlay_window_title);
             button.setAccessibilityPaneTitle(title);
+            int label = button.isEnabled() ? R.string.overlay_clear_all : R.string.overlay_clearing;
+            button.setText(label);
+            button.setContentDescription(service.getString(label));
+            button.setSingleLine(service.getResources().getConfiguration().fontScale <= 1.3f);
+            button.setTextColor(buttonTextColor());
+            button.setCompoundDrawableTintList(ColorStateList.valueOf(buttonTextColor()));
             params.setTitle(title);
         }
         if (!shown || windowManager == null) {
@@ -142,7 +148,7 @@ final class OverlayController {
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
         button.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
         button.setAllCaps(false);
-        button.setSingleLine(true);
+        button.setSingleLine(service.getResources().getConfiguration().fontScale <= 1.3f);
         button.setGravity(Gravity.CENTER);
         button.setMinWidth(dp(184));
         button.setMinHeight(dp(48));

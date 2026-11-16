@@ -10,3 +10,4 @@ local.properties
 *.properties.local
 backup/
 server/*.apk
+audit/

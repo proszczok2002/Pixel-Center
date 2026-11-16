@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pixel Center</string>
+    <string name="recents_service_label">Pixel Center — Telefonsteuerung</string>
+    <string name="recents_service_description">Zeigt auf dem Systembildschirm „Letzte Apps“ eine Schaltfläche „Alle Apps schließen“. Bei aktivierter Mediensteuerung reagiert der Dienst nur bei ausgeschaltetem Bildschirm auf langes Drücken der Lautstärketasten. Bildschirminhalte und Tastendrücke werden weder gespeichert noch übertragen.</string>
+    <string name="player_monitor_service_label">Pixel Center — Player-Erkennung</string>
+    <string name="unsupported_service_disabled">Der Pixel-Center-Dienst wurde deaktiviert, da dieses Gerät kein unterstütztes Google Pixel ist.</string>
+    <string name="overlay_clear_all">Alle Apps schließen</string>
+    <string name="overlay_clearing">Apps werden geschlossen…</string>
+    <string name="overlay_window_title">Pixel Center — Letzte Apps</string>
+    <string name="clear_success">Letzte Apps geschlossen</string>
+    <string name="clear_failure">Die Suche nach der Systemschaltfläche hat das Zeitlimit überschritten. Du kannst es erneut versuchen.</string>
+    <string name="clear_no_tasks">Keine Apps zum Schließen gefunden</string>
+</resources>
